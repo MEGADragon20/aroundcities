@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Sigmar+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('main.get_style', filename='product.css')}}">
+    <link rel="stylesheet" href="get_style/fonts.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{product.name}}</title>
+</head>
+<body> 
+    {% extends 'headbar.html' %}
+    {% block content %}
+    <div class="container">
+        <h1 class="share-tech-mono-regular">{{product.name}}</h1>
+        <img class="flipIn" src="{{ url_for('main.get_image', filename=product.image[0], foldername=product.id|string) }}">
+        <p class="flipIn">{{ product.description }}</p>
+        
+        <cite>{{product.price}}</cite>
+        <form method="post" action="{{ url_for('main.add_to_cart')}}">
+            <input type="hidden" name="product_id" value="{{ product.id }}">
+            <select class="flipIn" name="modification">
+                {% for modification in product.modifications %}
+                <option value="{{modification}}">{{modification}}</option>
+                {% endfor %}
+            </select>
+            <select class="flipIn" name="size">
+                <option value="XS">XS</option>
+                <option value="S">S</option>
+                <option value="M">M</option>
+                <option value="L">L</option>
+                <option value="XL">XL</option>
+                <option value="XXL">XXL</option>
+            </select>
+            <button class="flipIn" type="submit">Add to Cart</button>
+        </form>
+        <a href="{{ url_for('main.products')}}" style="margin-bottom: 30px; padding-bottom: 30px;">Back to Products</a>
+        <ul id="accordion">
+            <li>
+                <input type="checkbox" checked>
+                <i></i>
+                <h3 class="share-tech-mono-regular">Content</h3>
+                {% for item in product.content%}
+                    <p>{{item}}</p>
+                {% endfor %}
+            </li>
+            <li>
+                <input type="checkbox" checked>
+                <i></i>
+                <h3 class="share-tech-mono-regular">Shipping & Return</h3>
+                <p>Please enter your shipping and billing information using only English characters, without emojis, to ensure timely processing.</p>
+                    <br>
+                <p>Orders are shipped within 5-14 business days. If you place an order on a holiday, it will be processed on the next business day. Once your order has shipped, you will receive a separate email with tracking details. The estimated delivery time is 5-14 business days from the shipment date.</p>
+                
+            </li>
+        </ul>
+    </div>
+    {% endblock %}
+    
+</body>
+</html>

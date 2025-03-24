@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="get_style/fonts.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form>
+        <input type="hidden" name="price" value="{total_price}">
+        {% if email %}
+            <input type="email" name="email" value="{{email}}" placeholder="Email">
+        {% else %}
+            <input type="email" name="email" placeholder="Email">
+        {% endif %}
+        <button formaction="">SUBMIT</button>
+        <button formaction="">SUBMIT & Create Acount</button>
+    </form>
+</body>
+</html>

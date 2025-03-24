@@ -1,0 +1,82 @@
+:root {
+    --color1: #2C3E50;
+    --color2: #888C8F;
+    --color3: #4E5D6C;
+    --color4: #2E2E2E;
+    --color5: #C1C1C1;
+
+}
+
+.topnav {
+    overflow: hidden;
+    background-color: transparent;
+    width: 100%;
+    position: sticky;
+    top: 0 !important;
+    z-index: 1;
+    align-items: baseline;
+    color: white;
+
+}
+
+.topnav a {
+    width: 18%;
+    float: left;
+    display: block;
+    color: white;
+    text-align: center;
+    align-items: baseline;
+    padding: 14px 16px;
+    padding-top: 26px;
+    text-decoration: none;
+    font-size: 45px;
+    bottom: 0px;
+    transition: 0.3s ease;
+}
+#logo {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.topnav a:hover {
+    text-decoration:underline;
+}
+
+.topnav a img {
+    width: 70px;
+}
+
+.topnav .threelines {
+    display: none;
+}
+
+#cart {
+    float: right;
+}
+#search {
+    float: right;
+}
+
+@media screen and (max-width: 600px) {
+    .topnav a:not(:first-child) {display:none;}
+    .topnav #logo {display: block;}
+    .topnav .threelines {
+        float:right;
+        display: block !important;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .topnav.responsive .threelines {
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+    .topnav.responsive a {
+        float: none !important;
+        display: block;
+        text-align: left;
+    }
+    #logo {
+        display: none !important;
+    }
+}

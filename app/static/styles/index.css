@@ -1,0 +1,79 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+.zen-tokyo-zoo-regular {
+    font-family: "Zen Tokyo Zoo", serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+.container {
+    max-height: 100vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+
+    /* Hide scrollbar for Chrome, Safari, and Edge */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+}
+
+.section {
+    height: 100vh;
+    display: flex;
+    font-size: 2rem;
+    scroll-snap-align: start;
+}
+.section img {
+    width: 100%;
+    height: auto;
+}
+#section {
+    align-items: center;
+    justify-content: center;
+    float: right;
+}
+#section1 div {
+    width: 100vw;
+    padding-top: 25px;
+    text-align: center;
+}
+ #section1 div h1 {
+    text-align: center;
+}
+#section1 div p {
+    text-align: center;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+#section2 {
+    color: white !important;
+
+}
+#section2 div{
+    padding: 70px;
+    width: 33%;
+    float: left;
+}
+
+
+
+/* That arrow lol*/
+
+.scroll-down {
+    cursor: pointer;
+    bottom: 20px;
+    font-size: 3rem;
+    color: #333;
+    animation: bounce 1.2s infinite;
+    margin-top: 50px;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(10px); }
+}

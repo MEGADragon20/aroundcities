@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form method="post" action="add" enctype="multipart/form-data">
+        <input name="name" type="text" placeholder="name">
+        <br>
+        <textarea name="description" placeholder="description"></textarea>
+        <br>
+        <textarea name="content" placeholder="content(,)"></textarea>
+        <br>
+        <input type="number" placeholder="price_ct" name="price">
+        <br>
+        <input type="number" name="stockXS" placeholder="stockXS(default0)" value="0">
+        <br>
+        <input type="number" name="stockS" placeholder="stockS(default0)" value="0">
+        <br>
+        <input type="number" name="stockM" placeholder="stockM(default0)" value="0">
+        <br>
+        <input type="number" name="stockL" placeholder="stockL(default0)" value="0">
+        <br>
+        <input type="number" name="stockXL" placeholder="stockXL(default0)" value="0">
+        <br>
+        <input type="number" name="stockXXL" placeholder="stockXXL(default0)" value="0">
+        <br>
+        <input name="images" type="file" multiple>
+        <br>
+        <textarea name="collections" placeholder="collections(,)"></textarea>
+        <br>
+        <textarea name="modifications" placeholder="modifications(,)"></textarea>
+        <br>
+        <button type="submit">SUBMIT</button>
+    </form>
+</body>
+</html>

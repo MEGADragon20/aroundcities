@@ -1,0 +1,16 @@
+/* put these links up in the head of HTMl
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Sigmar+One&display=swap" rel="stylesheet">
+*/
+
+.sigmar-one-regular {
+    font-family: "Sigmar One", serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  .share-tech-mono-regular {
+    font-family: "Share Tech Mono", serif;
+    font-weight: 400;
+    font-style: normal;
+  }  

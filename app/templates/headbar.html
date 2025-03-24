@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Sigmar+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="get_style/fonts.css" type="text/css">
+    <link rel="stylesheet" href="get_style/headbar.css" type="text/css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    {% block headbar %}
+    <div class="hamburger-menu" id="hamburgerMenu">
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+  </div>
+    <a href="{{url_for('main.home')}}#section4"><img src="{{url_for('main.get_icon', filename='logo.png')}}" alt="Logo Image" class="logo"></a>
+
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <a id="home" class="sigmar-one-regular" href="{{ url_for('main.home') }}">Home</a>
+            <br>
+            <br>
+            <a id="products" class="sigmar-one-regular" href="{{ url_for('main.products') }}">Drops</a>
+            <br>
+            <br>
+            <a id="search" class="sigmar-one-regular" href="{{ url_for('main.logout') }}">Search</a>
+            <br>
+            <br>
+            <a id="cart" class="sigmar-one-regular" href="{{ url_for('main.cart') }}">Cart</a>
+        </div>
+    </div>
+    {% endblock %}
+
+    <script>
+
+const hamburger = document.getElementById("hamburgerMenu");
+const popup = document.getElementById("popup");
+const closeBtn = document.getElementById("closeBtn");
+
+
+hamburger.addEventListener("click", () => {
+  if (hamburger.classList.contains("open")) {
+    hamburger.classList.remove("open");
+    popup.classList.remove("open");
+  } else {
+    hamburger.classList.add("open");
+    popup.classList.add("open");
+  }
+});
+
+
+popup.addEventListener("click", (event) => {
+    if (event.target === popup) {
+        popup.style.display = "none";
+    }
+});
+
+
+        </script>
+
+    {% block content %}{% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Sigmar+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="get_style/products.css" type="text/css">
+    <link rel="stylesheet" href="get_style/fonts.css" type="text/css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>aC - Drops</title> 
+</head>
+{% extends 'headbar.html' %} 
+{% block content %}
+    <div class="container">
+    <h1 class="sigmar-one-regular centered"> DROPS</h1>
+    {% for product in products %}
+    <div class="product">
+        <img src="{{ url_for('main.get_image', foldername=product.id|string, filename=product.image[0]) }}">
+        <h3 class="sigmar-one-regular"><a class="sigmar-one-regular" style="text-decoration: none !important;" href="{{url_for('main.product', id=product.id)}}">{{ product.name }}</a></h3>
+        <p>{{ product.price }}</p>
+    </div>
+    {% endfor %}
+    </div>
+{% endblock %}
+</html>

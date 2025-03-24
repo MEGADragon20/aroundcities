@@ -1,0 +1,53 @@
+
+.item {
+    margin: 2vw;
+    padding: 2vw;
+    border: 1px dotted #dce7eb;
+    padding: auto;
+    text-align: center;
+    border-radius: 5px;
+    
+
+}
+
+.item span {
+    padding: 1vw;
+    border-collapse: collapse;
+
+}
+
+.centered {
+    text-align: center;
+    font-size: 45px;
+}
+
+.delete {
+    background-color: tomato;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-in-out;
+
+}
+.delete a {
+    color: white;
+    text-decoration: none;
+}
+.delete:hover {
+    background-color: red;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.but {
+    background-color: #494949;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: medium;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.but:hover {
+    background-color: #808080;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}

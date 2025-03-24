@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Sigmar+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="get_style/cart.css">
+    <link rel="stylesheet" href="get_style/fonts.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+    
+<body>
+    {% extends 'headbar.html' %}
+    {% block content %}
+    <h1 class="sigmar-one-regular centered">Cart</h1>
+    {% if cart %}
+        {% for key, value in cart.items() %}
+            <div class="item share-tech-mono-regular">
+                <a href="{{url_for('main.product', id=value['product_id'])}}">{{value['name']}}</a> 
+                <span>{{value['count']}}</span>
+                <span>Price: {{value['price']}}</span>
+                <span>Size: {{value['size']}}</span>
+                <span>{{value['modification']}}</span>
+                <span class="delete"><a href="remove_from_cart/{{key}}">DELETE</a></span>
+            </div>
+        {% endfor %}
+        <form style="text-align: center;" action="submit_cart">
+            <button class="share-tech-mono-regular but" type="submit">BUY</button>
+        </form>
+    {% else %}
+    <h3 class="share-tech-mono-regular" style="text-align: center;">Cart is empty</h2>
+        <form style="text-align: center;" action="products">
+            <button class="share-tech-mono-regular but" type="submit">ADD STUFF</button>
+        </form>
+    {% endif %}
+    {% endblock %}
+</body>
+</html>

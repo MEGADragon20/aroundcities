@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="get_style/pay.css" type="text/css">
+    <link rel="stylesheet" href="get_style/fonts.css" type="text/css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Sigmar+One&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stripe Payment</title>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <div class="interface">
+    <h2 class="share-tech-mono-regular">Pay with Stripe</h2>
+    <hr>
+    <p class="share-tech-mono-regular">{{total_price_str}}</p>
+    <input id="amount" name="amount" type="hidden" placeholder="amount_in_cents" value={{total_price}}>
+    <div id="card-element"></div>
+    <button id="payButton">Pay Now</button>
+    <p id="payment-message"></p>
+    </div>
+    <script>
+        fetch("/get_stripe_public_key", {
+            headers: { "X-API-KEY": "1234" }
+        })
+        .then(response => response.json())
+        .then(data => {
+            stripe = Stripe(data.publicKey);
+            const elements = stripe.elements();
+            card = elements.create("card");
+            card.mount("#card-element");
+            console.log("Card", card);
+            amount = document.getElementById("amount").value // ct
+        });
+        
+        
+
+        document.getElementById("payButton").addEventListener("click", async () => {
+            const response = await fetch("/pay_cart", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ amount: amount, currency: "eur" })
+            });
+
+            const { clientSecret } = await response.json();
+            const result = await stripe.confirmCardPayment(clientSecret, {
+                payment_method: { card: card }
+            });
+
+            if (result.error) {
+                alert("Payment failed: " + result.error.message);
+            } else {
+                document.getElementById("payment-message").innerText = "Payment successful!";
+            }
+        });
+    </script>
+</body>
+</html>

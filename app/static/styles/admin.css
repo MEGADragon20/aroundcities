@@ -1,0 +1,47 @@
+body {
+    background-color: white;
+    text-align: center;
+}
+h1 {
+    color: whitesmoke;
+    text-shadow: 1px 1px #000000;
+}
+button {
+    width: 80%;
+    margin: 10px;
+    padding: 10px 20px;
+    color: white;
+    background-color: darkblue;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+button:hover {
+    background-color: blue;
+}
+div {
+    width: 43.5vw;
+    background-color: aliceblue;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 1vw;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    display: inline-block;
+}
+@media screen and (max-width: 768px) {
+    div {
+        width: none;
+        min-width: 80vw;
+        
+    }
+}

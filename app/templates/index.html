@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{{url_for('main.get_style', filename='index.css')}}">
+    <link rel="stylesheet" href="get_style/fonts.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Sigmar+One&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOME</title>
+</head>
+ <style>
+    #section2 {
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.2)), 
+        url("{{ url_for('main.get_image', filename='image1.png')}}") no-repeat center center;
+    background-size: cover;
+    color: white !important;
+
+    }
+    #section2 div{
+        padding: 70px;
+        width: 33%;
+        float: left;
+    }
+    #section3 {
+        background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)),
+            url("{{ url_for('main.get_image', filename='image2.png')}}") no-repeat center center;
+        background-size: cover;
+    }
+    #section4 {
+        background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.2)),
+            url("{{ url_for('main.get_image', filename='image3.png')}}") no-repeat center center;
+        background-size: cover;
+    }
+ </style>
+<body>
+    {% extends 'headbar.html' %}
+    {% block content %}
+    <div class = "container">
+        <div id = "section1" class = "section">
+            <div>
+               <h1 class="sigmar-one-regular" style="color: black;">
+                    AROUND CITIES
+                </h1>
+                <p class="share-tech-mono-regular">
+                    Welcome to our shop. <br>
+                    Scroll down to see our newest drops.
+                </p>
+                <div class="scroll-down">⬇</div>
+            </div>
+        </div>
+        <div id = "section2" class = "section">
+            <div>
+                <h1 class="zen-tokyo-zoo-regular">
+                    The Tokyo Zipper
+                </h1>
+                <p>
+                    The Tokyo Zipper is a unique and captivating streetwear piece that was created by the esteemed designer, Pablo Corbacho Martinez. It shows the multiple facettes that the hyper-metropolis Tokyo has to offer.
+                </p>
+            </div>
+        </div>
+        <div id = "section3" class = "section">Section 3</div>
+        <div id = "section4" class = "section">About US</div>
+        <div class = "section">Section 5</div>
+    </div>
+    {% endblock %}
+</body>
+</html>

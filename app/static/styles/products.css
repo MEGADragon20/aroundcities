@@ -1,0 +1,70 @@
+:root {
+    --color1: #2C3E50;
+    --color2: #888C8F;
+    --color3: #4E5D6C;
+    --color4: #2E2E2E;
+    --color5: #C1C1C1;
+
+}
+
+body {
+    background-color: white;
+}
+
+.container {
+    align-items: stretch;
+}
+
+.product {
+    float: left;
+    /*padding: 10px;
+    margin: 10px;*/
+    border-radius: 5px;
+    width: 18vw;
+    /*text-align: center;*/ 
+    align-items: center;
+    background-color: transparent;
+    margin: 1vw;
+
+}
+.product img {
+    width: 100%;
+    border: solid 3px black;
+    border-radius: 5px;
+}
+
+
+.product h3 {
+    color: var(--color2);
+    align-self: left !important;
+    font-size: x-large;
+    font-family: "Sigmar", serif;
+    font-style: normal;
+    transition: color ease 0.5s;
+    text-transform: uppercase;
+}
+.product h3:hover {
+    color: black;
+}
+
+.centered {
+    text-align: center;
+    font-size: 45px;
+}
+@media screen and (max-width: 1300px) {
+    .product {
+        width: 23vw;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .product {
+        width: 31.3vw;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .product {
+        width: 48vw
+    }
+}

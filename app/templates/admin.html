@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.plot.ly/plotly-3.0.1.min.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="get_style/fonts.css" type="text/css">
+    <link rel="stylesheet" href="get_style/admin.css" type="text/css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Sigmar+One&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <h1 class="share-tech-mono-regular">ADMIN</h1>
+    </div>
+    
+    <div>
+        
+        <a href="{{ url_for('main.admin_products') }}">
+            <button>Products</button>
+        </a>
+        <br>
+        <a href="{{ url_for('main.admin_orders')}}">
+            <button>Orders</button>
+        </a>
+    </div>
+    <div id="myPlot" style="max-width:90%;">
+        
+    </div>
+    <div>
+        <a href="{{ url_for('main.logout') }}">Logout</a>
+    </div>
+
+
+    <script type="text/javascript">
+        // get the data 
+        var pending = "{{pending}}";
+        var packing = "{{packing}}";
+        var packed = "{{packed}}";
+        var shipping = "{{shipping}}";
+        var shipped = "{{shipped}}";
+        console.log(pending, packing, packed, shipping, shipped);
+            const xArray = ["Pending", "Packing", "Packed", "Shipping", "Shipped"];
+            const yArray = [pending, packing, packed, shipping, shipped];
+
+            const layout = {title:"Current Orders"};
+
+            const data = [{labels:xArray, values:yArray, hole:.4, type:"pie"}];
+
+            Plotly.newPlot("myPlot", data, layout);
+        </script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <p>{{ form.username.label }} {{ form.username }}</p>
+    <p>{{ form.email.label }} {{ form.email }}</p>
+    <p>{{ form.password.label }} {{ form.password }}</p>
+    <p>{{ form.confirm_password.label }} {{ form.confirm_password }}</p>
+    <p>{{ form.country.label}} {{form.country}}</p>
+    <p>{{ form.city.label}} {{form.city}}</p>
+    <p>{{ form.postal_code.label}} {{form.postal_code}}</p>
+    <p>{{ form.street.label}} {{form.street}}</p>
+    <p>{{ form.country.number}} {{form.number}}</p>
+    <p>{{ form.submit }}</p>
+</form>
