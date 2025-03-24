@@ -10,4 +10,4 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
     STRIPE_PUBLIC_KEY = os.getenv("STRIPE_PUBLIC_KEY")
-
+    WEB_LOG = 'web_log.txt'

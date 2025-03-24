@@ -6,10 +6,19 @@ from .forms import SignupForm, LoginForm
 from werkzeug.utils import secure_filename
 from .functions import transform_in_euro, transform_out_euro, create_order
 from sqlalchemy.sql import text
-import flask, os, stripe
+import flask, os, stripe, logging
 main = Blueprint("main", __name__)
 
 API_KEY = "1234"
+logging.basicConfig(filename='web_log.txt', level=logging.INFO, format='%(asctime)s %(message)s')
+@main.before_request
+def log_request_info():
+    user_ip = request.remote_addr
+    url = request.url 
+    logging.info(f'request from {user_ip} to {url}')
+    print(f'request from {user_ip} to {url}')
+
+
 
 @main.route('/get_icon/<filename>')
 def get_icon(filename):
