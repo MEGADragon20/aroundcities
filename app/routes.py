@@ -182,22 +182,22 @@ def submit_cart():
 #! Profile
 
 @main.route("/pay_cart", methods=["POST"])
-@login_required
 def pay_cart():
     try:
-        cart = session.get('cart', {})
-        current_user_id = current_user.id
-        current_user_adress = current_user.adress
+        #cart = session.get('cart', {})
+        #current_user_id = current_user.id
+        #current_user_adress = current_user.adress
         price_to_pay = request.get_json().get('amount', 1000)
         currency = request.form.get('currency', 'eur')
         payment_intent = stripe.PaymentIntent.create(amount=price_to_pay,currency=currency)
+        return jsonify({"clientSecret": payment_intent.client_secret})
         
     except Exception as e:
         print(e)
         return jsonify({"error": str(e)}), 400
     
-    create_order(cart=cart, price=price_to_pay, usr_id=current_user_id, order_adress=current_user_adress)
-    return jsonify({"clientSecret": payment_intent.client_secret})
+    #create_order(cart=cart, price=price_to_pay, usr_id=current_user_id, order_adress=current_user_adress)
+    
 
 
 
