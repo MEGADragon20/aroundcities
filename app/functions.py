@@ -1,22 +1,13 @@
 from .models import Order, User, db
 import datetime, json
-import socket
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
-def get_local_ip():
-    """
-    Obtains the local IP address by attempting to connect to an server
-    """
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.settimeout(0)
-    try:
-        # Conectarse a un servidor público para obtener la IP local
-        s.connect(('10.254.254.254', 1))
-        ip = s.getsockname()[0]
-    except Exception:
-        ip = '127.0.0.1'
-    finally:
-        s.close()
-    return ip
+
 
 
 def transform_in_euro(number: int) -> str:
@@ -57,10 +48,10 @@ def create_order(cart, price, usr_id, order_adress: None) -> Order:
         raise ValueError("Cart must be a dictionary containing product details.")
 
     if isinstance(order_adress, dict):
-        order_adress = json.dumps(order_adress)  # Convert dict to JSON string
+        order_adress = json.dumps(order_adress)
 
-    if isinstance(cart, str):  # If cart was accidentally converted to a string
-        cart = json.loads(cart)  # Convert it back to a dict
+    if isinstance(cart, str):
+        cart = json.loads(cart)
     
 
     order = Order(
@@ -75,3 +66,28 @@ def create_order(cart, price, usr_id, order_adress: None) -> Order:
     db.session.add(order)
     db.session.commit()
 
+
+
+def send_email(to, subject, body):
+    sender_email = "around.cities@gmx.de"
+    smtp_server = "mail.gmx.net"
+    smtp_port = 587
+    smtp_user = os.getenv("SMTP_USER")
+    smtp_password = os.getenv("SMTP_PASSWORD")
+    print(smtp_password, smtp_user)
+
+    message = MIMEMultipart()
+    message["From"] = sender_email
+    message["To"] = to
+    message["Subject"] = subject
+
+    message.attach(MIMEText(body, "plain"))
+
+    try:
+        with smtplib.SMTP(smtp_server, smtp_port) as server:
+            server.starttls()
+            server.login(smtp_user, smtp_password)
+            server.sendmail(sender_email, to, message.as_string())
+        print(f"email to {to}.")
+    except Exception as e:
+        print(f"error sending email to {to}: {e}")

@@ -1,10 +1,10 @@
 from functools import wraps
 from flask import Blueprint, render_template, redirect, url_for, flash, abort, request, send_from_directory, session, jsonify
 from flask_login import login_user, logout_user, login_required, current_user
-from .models import db, User, Product, Order
+from .models import db, User, Product, Order, Waitlist
 from .forms import SignupForm, LoginForm
 from werkzeug.utils import secure_filename
-from .functions import transform_in_euro, transform_out_euro, create_order
+from .functions import transform_in_euro, transform_out_euro, create_order, send_email
 from sqlalchemy.sql import text
 import flask, os, stripe, logging
 main = Blueprint("main", __name__)
@@ -89,9 +89,7 @@ def login():
             flash("Login successful!", "success")
             next = flask.request.args.get('next')
             print(next)
-            # next_is_valid should check if the user has valid
-            # permission to access the `next` url
-            return redirect(url_for("main.dashboard"))
+            return redirect(url_for("main." + next)) if next is not None else redirect(url_for("main.dashboard"))
         flash("Invalid email or password!", "danger")
     print(current_user)
     return render_template("login.html", form=form)
@@ -113,7 +111,10 @@ def product():
     if request.method == "GET":
         product_id = request.args.get("id")
         product = Product.query.get(product_id)
-        return render_template("product.html", product=product)
+        outoforder = False
+        if product.stock == {"XS": 0, "S": 0, "M": 0, "L": 0, "XL": 0, "XXL": 0}:
+            outoforder = True
+        return render_template("product.html", product=product, outoforder=outoforder)
 
 @main.route("/add_to_cart", methods=["POST"])
 def add_to_cart():
@@ -184,19 +185,20 @@ def submit_cart():
 @main.route("/pay_cart", methods=["POST"])
 def pay_cart():
     try:
-        #cart = session.get('cart', {})
-        #current_user_id = current_user.id
-        #current_user_adress = current_user.adress
+        cart = session.get('cart', {})
+        current_user_id = current_user
+        current_user_adress = current_user.adress
         price_to_pay = request.get_json().get('amount', 1000)
         currency = request.form.get('currency', 'eur')
         payment_intent = stripe.PaymentIntent.create(amount=price_to_pay,currency=currency)
+        create_order(cart=cart, price=price_to_pay, usr_id=current_user_id, order_adress=current_user_adress)
         return jsonify({"clientSecret": payment_intent.client_secret})
+
         
     except Exception as e:
         print(e)
         return jsonify({"error": str(e)}), 400
     
-    #create_order(cart=cart, price=price_to_pay, usr_id=current_user_id, order_adress=current_user_adress)
     
 
 
@@ -208,6 +210,10 @@ def pay_cart():
 def dashboard():
     return render_template("dashboard.html")
 
+@main.route("/test")
+@login_required
+def test():
+    return "Test123"
 
 @main.route("/logout")
 @login_required
@@ -217,8 +223,18 @@ def logout():
     session.clear()
     return redirect(url_for("main.login"))
 
+@main.route("/add_to_waitlist", methods=["GET"])
+@login_required
+def add_to_waitlist():
+    product_id = request.args.get("product_id")
+    existing = Waitlist.query.filter_by(user_id=current_user.id, product_id=product_id).first()
+    if existing:
+        return jsonify({"message": "Already on the waitlist"}), 409
 
-
+    entry = Waitlist(user_id=current_user.id, product_id=product_id)
+    db.session.add(entry)
+    db.session.commit()
+    return jsonify({"message": "Added to waitlist!"})
 
 
 #! Admin
@@ -332,3 +348,36 @@ def admin_orders():
 def admin_order(id):
     order = Order.query.get_or_404(id)
     return render_template('admin_order.html', order=order)
+
+@main.route("/admin/notify_waitlist")
+def show_notify_waitlist():
+    product_ids = [id[0] for id in Product.query.with_entities(Product.id).all()]
+    return render_template('admin_notify_waitlist.html', products = product_ids)
+
+@main.route("/admin/notify_waitlist/<int:product_id>")
+@admin_required
+def notify_waitlist(product_id):
+    waitlist = Waitlist.query.filter_by(product_id=product_id).all()
+
+    if not waitlist:
+        return "Empty waitlist"
+
+    emails_sent = 0
+    for entry in waitlist:
+        user = User.query.get(entry.user_id)
+        if user:
+            try:
+                send_email(
+                    to=user.email,
+                    subject="Dein gewünschtes Produkt ist wieder da!",
+                    body=f"Hey {user.username}, das Produkt ist wieder verfügbar: [Link zum Produkt]"
+                )
+                emails_sent += 1
+            except Exception as e:
+                print(f"Fehler bei {user.email}: {e}")
+
+    # Liste leeren
+    Waitlist.query.filter_by(product_id=product_id).delete()
+    db.session.commit()
+
+    return f"{emails_sent} E-Mails verschickt."

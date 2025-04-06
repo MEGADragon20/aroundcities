@@ -48,3 +48,9 @@ class Order(db.Model):
     address = db.Column(JSON(), nullable= False)
     email = db.Column(db.String(120), nullable=False)
     date = db.Column(db.DateTime, default=db.func.now())
+
+class Waitlist(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
+    timestamp = db.Column(db.DateTime, default=db.func.now())

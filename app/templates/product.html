@@ -19,6 +19,7 @@
         <p class="flipIn">{{ product.description }}</p>
         
         <cite>{{product.price}}</cite>
+        {% if not outoforder %}
         <form method="post" action="{{ url_for('main.add_to_cart')}}">
             <input type="hidden" name="product_id" value="{{ product.id }}">
             <select class="flipIn" name="modification">
@@ -36,6 +37,14 @@
             </select>
             <button class="flipIn" type="submit">Add to Cart</button>
         </form>
+        {% endif %}
+        {% if outoforder %}
+        <form action="{{ url_for('main.add_to_waitlist', product_id=product.id) }}">
+            <input type="hidden" name="product_id" value="{{product.id}}">
+            <button class="flipIn" type="submit">Waitlist</button>
+
+        </form>
+        {% endif %}
         <a href="{{ url_for('main.products')}}" style="margin-bottom: 30px; padding-bottom: 30px;">Back to Products</a>
         <ul id="accordion">
             <li>
