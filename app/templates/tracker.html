@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<body>
+
+<canvas id="myChart" style="width:100%;"></canvas>
+
+<script>
+const xValues = {{ types|tojson }};
+const yValues = {{ values|tojson }};
+const barColors = ["red", "green", "blue", "orange", "brown"];
+console.log(xValues);
+
+new Chart("myChart", {
+  type: "bar",
+  data: {
+    labels: xValues,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yValues,
+      barThickness: 40,          // Consistent bar width
+      categoryPercentage: 0.2,   // Reduces spacing between categories
+      barPercentage: 1.0         // Bars fill the space fully
+    }]
+  },
+  options: {
+    legend: { display: false },
+    scales: {
+      yAxes: [{
+        ticks: {
+          beginAtZero: true,
+          stepSize: 1,
+          callback: function(value) {
+            if (Number.isInteger(value)) {
+              return value;
+            }
+          }
+        },
+        gridLines: {
+          display: true  // Show horizontal grid lines
+        }
+      }],
+      xAxes: [{
+        gridLines: {
+          display: false  // Hide vertical grid lines
+        },
+        ticks: {
+          autoSkip: false  // Ensures all labels are shown
+        }
+      }]
+    },
+    title: {
+      display: true,
+      text: "Our Product Tracker"
+    }
+  }
+});
+</script>
+
+</body>
+</html>

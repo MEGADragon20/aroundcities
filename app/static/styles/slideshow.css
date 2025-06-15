@@ -1,0 +1,10 @@
+.slideshow {
+    width: 80vw !important;
+    height: 60vh;
+    background-color: red;
+    margin: auto;
+}
+.mySlides {
+    width:100% !important;
+    display: none;
+}

@@ -4,38 +4,357 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Sigmar+One&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="get_style/cart.css">
     <link rel="stylesheet" href="get_style/fonts.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            font-family: "Share Tech Mono", monospace;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #ffffff 100%);
+            min-height: 100vh;
+        }
+
+        .sigmar-one-regular {
+            font-family: "Sigmar One", cursive;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .share-tech-mono-regular {
+            font-family: "Share Tech Mono", monospace;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        /* Cart Container */
+        .cart-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            position: relative;
+        }
+
+        .cart-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(90deg, rgba(44,62,80,0.03) 1px, transparent 1px),
+                linear-gradient(rgba(44,62,80,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* Title Styling */
+        .centered {
+            text-align: center;
+            font-size: 4rem;
+            margin-bottom: 50px;
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 2;
+            letter-spacing: 3px;
+        }
+
+        .centered::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #2c3e50, #6c757d, #2c3e50);
+            border-radius: 2px;
+        }
+
+        /* Cart Items */
+        .cart-items {
+            position: relative;
+            z-index: 2;
+            margin-bottom: 40px;
+        }
+
+        .item {
+            margin: 20px 0;
+            padding: 25px;
+            background: white;
+            border: 2px solid rgba(44, 62, 80, 0.1);
+            border-style: dotted;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.4) 50%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+            border-color: rgba(44, 62, 80, 0.2);
+        }
+
+        .item:hover::before {
+            opacity: 1;
+        }
+
+        .item a {
+            color: #2c3e50;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        .item a:hover {
+            color: #495057;
+        }
+
+        .item span {
+            display: inline-block;
+            padding: 8px 15px;
+            margin: 5px 8px;
+            background: rgba(248, 249, 250, 0.8);
+            border-radius: 8px;
+            color: #495057;
+            font-size: 1rem;
+            border: 1px solid rgba(233, 236, 239, 0.6);
+            transition: all 0.3s ease;
+        }
+
+        .item span:not(.delete):hover {
+            background: rgba(233, 236, 239, 0.8);
+            border-color: rgba(108, 117, 125, 0.3);
+        }
+
+        /* Delete Button */
+        .delete {
+            background: linear-gradient(135deg, tomato, rgb(209, 63, 37)) !important;
+            color: white !important;
+            border: none !important;
+            cursor: pointer;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+            transition: all 0.3s ease !important;
+        }
+
+        .delete a {
+            color: white !important;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .delete:hover {
+            background: linear-gradient(135deg, rgb(245, 28, 28), rgb(209, 63, 37)) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4) !important;
+        }
+
+        /* Action Buttons */
+        .action-form {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            margin: 30px 0;
+        }
+
+        .but {
+            background: linear-gradient(135deg, #2c3e50, #495057);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            padding: 15px 40px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .but:hover {
+            background: linear-gradient(135deg, #495057, #6c757d);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .but:active {
+            transform: translateY(-1px);
+        }
+
+        /* Empty Cart Message */
+        .empty-cart {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            background: white;
+            padding: 60px 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            border: 1px solid rgba(233, 236, 239, 0.8);
+            margin: 40px 0;
+        }
+
+        .empty-cart h3 {
+            font-size: 1.8rem;
+            color: #6c757d;
+            margin-bottom: 30px;
+            font-weight: 400;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .cart-container {
+                padding: 40px 15px;
+            }
+
+            .centered {
+                font-size: 2.5rem;
+                margin-bottom: 40px;
+                letter-spacing: 1px;
+            }
+
+            .item {
+                padding: 20px;
+                margin: 15px 0;
+            }
+
+            .item a {
+                font-size: 1.1rem;
+            }
+
+            .item span {
+                display: block;
+                margin: 8px 0;
+                padding: 10px 15px;
+            }
+
+            .but {
+                font-size: 1rem;
+                padding: 12px 30px;
+            }
+
+            .empty-cart {
+                padding: 40px 20px;
+            }
+
+            .empty-cart h3 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cart-container {
+                padding: 30px 10px;
+            }
+
+            .centered {
+                font-size: 2rem;
+            }
+
+            .item {
+                padding: 15px;
+            }
+
+            .item a {
+                font-size: 1rem;
+            }
+
+            .but {
+                padding: 10px 25px;
+            }
+        }
+
+        /* Smooth scrolling and animations */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .item {
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .item:nth-child(1) { animation-delay: 0.1s; }
+        .item:nth-child(2) { animation-delay: 0.2s; }
+        .item:nth-child(3) { animation-delay: 0.3s; }
+        .item:nth-child(4) { animation-delay: 0.4s; }
+        .item:nth-child(5) { animation-delay: 0.5s; }
+        .item:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
 
-    
 <body>
     {% extends 'headbar.html' %}
     {% block content %}
-    <h1 class="sigmar-one-regular centered">Cart</h1>
-    {% if cart %}
-        {% for key, value in cart.items() %}
-            <div class="item share-tech-mono-regular">
-                <a href="{{url_for('main.product', id=value['product_id'])}}">{{value['name']}}</a> 
-                <span>{{value['count']}}</span>
-                <span>Price: {{value['price']}}</span>
-                <span>Size: {{value['size']}}</span>
-                <span>{{value['modification']}}</span>
-                <span class="delete"><a href="remove_from_cart/{{key}}">DELETE</a></span>
+    <div class="cart-container">
+        <h1 class="sigmar-one-regular centered">Cart</h1>
+        
+        {% if cart %}
+            <div class="cart-items">
+                {% for key, value in cart.items() %}
+                    <div class="item share-tech-mono-regular">
+                        <a href="{{url_for('main.product', id=value['product_id'])}}">{{value['name']}}</a> 
+                        <span>Qty: {{value['count']}}</span>
+                        <span>Price: {{value['price']}}</span>
+                        <span>Size: {{value['size']}}</span>
+                        <span>{{value['modification']}}</span>
+                        <span class="delete"><a href="remove_from_cart/{{key}}">DELETE</a></span>
+                    </div>
+                {% endfor %}
             </div>
-        {% endfor %}
-        <form style="text-align: center;" action="submit_cart">
-            <button class="share-tech-mono-regular but" type="submit">BUY</button>
-        </form>
-    {% else %}
-    <h3 class="share-tech-mono-regular" style="text-align: center;">Cart is empty</h2>
-        <form style="text-align: center;" action="products">
-            <button class="share-tech-mono-regular but" type="submit">ADD STUFF</button>
-        </form>
-    {% endif %}
+            
+            <form class="action-form" action="submit_cart">
+                <button class="share-tech-mono-regular but" type="submit">BUY NOW</button>
+            </form>
+        {% else %}
+            <div class="empty-cart">
+                <h3 class="share-tech-mono-regular">Cart is empty</h3>
+                <form class="action-form" action="products">
+                    <button class="share-tech-mono-regular but" type="submit">ADD STUFF</button>
+                </form>
+            </div>
+        {% endif %}
+    </div>
     {% endblock %}
 </body>
 </html>

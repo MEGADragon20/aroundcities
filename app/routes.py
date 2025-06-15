@@ -6,13 +6,13 @@ from .forms import SignupForm, LoginForm
 from werkzeug.utils import secure_filename
 from .functions import transform_in_euro, transform_out_euro, create_order, send_email
 from sqlalchemy.sql import text
-import flask, os, stripe, logging
+import flask, os, stripe, logging, json
 main = Blueprint("main", __name__)
 
 API_KEY = "1234"
 logging.basicConfig(filename='web_log.txt', level=logging.INFO, format='%(asctime)s %(message)s')
 @main.before_request
-def log_request_info():
+def log_request_info(): 
     user_ip = request.remote_addr
     url = request.url 
     logging.info(f'request from {user_ip} to {url}')
@@ -52,6 +52,10 @@ def get_stripe_public_key():
 def home():
     return render_template("index.html")
 
+@main.route("/about_us")
+def about_us():
+    return render_template("aboutus.html")
+
 @main.route("/pay")
 def pay():
     return render_template("pay.html")
@@ -89,7 +93,7 @@ def login():
             flash("Login successful!", "success")
             next = flask.request.args.get('next')
             print(next)
-            return redirect(url_for("main." + next)) if next is not None else redirect(url_for("main.dashboard"))
+            return redirect(next) if next is not None else redirect(url_for("main.dashboard"))
         flash("Invalid email or password!", "danger")
     print(current_user)
     return render_template("login.html", form=form)
@@ -101,9 +105,6 @@ def products():
         products = Product.query.all()
         return render_template("products.html", products=products)
 
-@main.route("/about_us")
-def about_us():
-    return render_template("about_us.html")
 
 
 @main.route("/product", methods=["GET", "POST"])
@@ -180,13 +181,42 @@ def submit_cart():
     flash("Cart submitted!", "success")
     return render_template("pay.html", total_price=total_price, total_price_str= total_price_str)
 
+
+@main.route("/tracker")
+def tracker():
+    product_ids = []
+    for order in Order.query.all():
+        for product in order.products:
+            product_ids.append(order.products[product]["product_id"])
+    origins = ["madrid", " tokyo", "paris", "berlin", "newyork", "london"]
+    collections = {}
+    for i in origins:
+        collections[i] = 0
+    for product_id in product_ids:
+        product = Product.query.get(product_id)
+        print(product.collections)
+        if product:
+            for collection in product.collections:
+                if collection in collections:
+                    collections[collection] += 1
+    print("collections", collections)
+    types = []
+    values = []
+    for k, v in collections.items():
+        types.append(k)
+        values.append(v)
+    print("types", types)
+    return render_template("tracker.html", types=types, values=values)
+
+
 #! Profile
 
 @main.route("/pay_cart", methods=["POST"])
+@login_required
 def pay_cart():
     try:
         cart = session.get('cart', {})
-        current_user_id = current_user
+        current_user_id = current_user.id
         current_user_adress = current_user.adress
         price_to_pay = request.get_json().get('amount', 1000)
         currency = request.form.get('currency', 'eur')
@@ -350,7 +380,7 @@ def admin_order(id):
     return render_template('admin_order.html', order=order)
 
 @main.route("/admin/notify_waitlist")
-def show_notify_waitlist():
+def admin_notify_waitlist():
     product_ids = [id[0] for id in Product.query.with_entities(Product.id).all()]
     return render_template('admin_notify_waitlist.html', products = product_ids)
 
@@ -369,8 +399,8 @@ def notify_waitlist(product_id):
             try:
                 send_email(
                     to=user.email,
-                    subject="Dein gewünschtes Produkt ist wieder da!",
-                    body=f"Hey {user.username}, das Produkt ist wieder verfügbar: [Link zum Produkt]"
+                    subject="Your requested product is available again",
+                    body=f"Hello {user.username}, \n we have finally stocked up the product you requested. It's a high demanded product so we'd recommend you to buy it now:" + url_for('main.product', id=product_id)
                 )
                 emails_sent += 1
             except Exception as e:

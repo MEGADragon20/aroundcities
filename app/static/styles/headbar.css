@@ -68,7 +68,7 @@
     transform: translateX(-50%); /* Keep the centering */
     background-color: rgba(0, 0, 0, 0.2);
     width: 300px;
-    z-index: 2;
+    z-index: 3;
     box-shadow: inset;
     border-radius: 5px;
     visibility: hidden; /* Initially hidden */

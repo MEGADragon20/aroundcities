@@ -26,30 +26,13 @@
             <button>Orders</button>
         </a>
     </div>
-    <div id="myPlot" style="max-width:90%;">
-        
+    <div>
+        <a href="{{ url_for('main.admin_notify_waitlist') }}">
+            <button>Waitlists</button>
+        </a>
     </div>
     <div>
         <a href="{{ url_for('main.logout') }}">Logout</a>
     </div>
-
-
-    <script type="text/javascript">
-        // get the data 
-        var pending = "{{pending}}";
-        var packing = "{{packing}}";
-        var packed = "{{packed}}";
-        var shipping = "{{shipping}}";
-        var shipped = "{{shipped}}";
-        console.log(pending, packing, packed, shipping, shipped);
-            const xArray = ["Pending", "Packing", "Packed", "Shipping", "Shipped"];
-            const yArray = [pending, packing, packed, shipping, shipped];
-
-            const layout = {title:"Current Orders"};
-
-            const data = [{labels:xArray, values:yArray, hole:.4, type:"pie"}];
-
-            Plotly.newPlot("myPlot", data, layout);
-        </script>
 </body>
 </html>

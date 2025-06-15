@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="{{url_for('main.get_style', filename='index.css')}}">
     <link rel="stylesheet" href="get_style/fonts.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -9,61 +8,321 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HOME</title>
-</head>
- <style>
-    #section2 {
-    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.2)), 
-        url("{{ url_for('main.get_image', filename='image1.png')}}") no-repeat center center;
-    background-size: cover;
-    color: white !important;
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            font-family: "Share Tech Mono", monospace;
+        }
 
-    }
-    #section2 div{
-        padding: 70px;
-        width: 33%;
-        float: left;
-    }
-    #section3 {
-        background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)),
-            url("{{ url_for('main.get_image', filename='image2.png')}}") no-repeat center center;
-        background-size: cover;
-    }
-    #section4 {
-        background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.2)),
-            url("{{ url_for('main.get_image', filename='image3.png')}}") no-repeat center center;
-        background-size: cover;
-    }
- </style>
+        .sigmar-one-regular {
+            font-family: "Sigmar One", cursive;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .share-tech-mono-regular {
+            font-family: "Share Tech Mono", monospace;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        /* Landing Section */
+        .landing-section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #ffffff 100%);
+            color: #2c3e50;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .landing-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(90deg, rgba(44,62,80,0.05) 1px, transparent 1px),
+                linear-gradient(rgba(44,62,80,0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.3;
+        }
+
+        .logo-container {
+            margin-bottom: 40px;
+        }
+
+        .logo-container img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease;
+            border: 3px solid #fff;
+        }
+
+        .logo-container img:hover {
+            transform: scale(1.1);
+        }
+
+        .landing-content h1 {
+            font-size: 4rem;
+            margin: 20px 0;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .landing-content p {
+            font-size: 1.5rem;
+            margin: 20px 0;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        .scroll-down {
+            cursor: pointer;
+            font-size: 3rem;
+            color: #6c757d;
+            animation: bounce 1.2s infinite;
+            margin-top: 50px;
+            opacity: 0.7;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(10px); }
+        }
+
+        /* Products Section */
+        .products-section {
+            padding: 80px 20px;
+            background: #ffffff;
+            min-height: 100vh;
+            color: #2c3e50;
+        }
+
+        .products-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .products-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 60px;
+            color: #2c3e50;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            padding: 20px 0;
+        }
+
+        .product-card {
+            background: #ffffff;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            border: 1px solid #e9ecef;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border-color: #dee2e6;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef, #dee2e6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #6c757d;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.8) 50%, transparent 60%),
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 3px,
+                    rgba(108,117,125,0.1) 3px,
+                    rgba(108,117,125,0.1) 6px
+                );
+        }
+
+        .product-content {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .product-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .product-description {
+            color: #6c757d;
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .landing-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .landing-content p {
+                font-size: 1.2rem;
+                padding: 0 20px;
+            }
+
+            .products-title {
+                font-size: 2rem;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
 <body>
     {% extends 'headbar.html' %}
     {% block content %}
-    <div class = "container">
-        <div id = "section1" class = "section">
-            <div>
-               <h1 class="sigmar-one-regular" style="color: black;">
-                    AROUND CITIES
-                </h1>
-                <p class="share-tech-mono-regular">
-                    Welcome to our shop. <br>
-                    Scroll down to see our newest drops.
-                </p>
-                <div class="scroll-down">⬇</div>
-            </div>
+    
+    <!-- Landing Section -->
+    <div class="landing-section">
+        <div class="logo-container">
+            <img src="{{url_for('main.get_icon', filename='logo.png')}}" alt="AroundCities Logo">
         </div>
-        <div id = "section2" class = "section">
-            <div>
-                <h1 class="zen-tokyo-zoo-regular">
-                    The Tokyo Zipper
-                </h1>
-                <p>
-                    The Tokyo Zipper is a unique and captivating streetwear piece that was created by the esteemed designer, Pablo Corbacho Martinez. It shows the multiple facettes that the hyper-metropolis Tokyo has to offer.
-                </p>
-            </div>
+        <div class="landing-content">
+            <h1 class="sigmar-one-regular">
+                AROUND CITIES
+            </h1>
+            <p class="share-tech-mono-regular">
+                Welcome to our shop.<br>
+                Scroll down to see our newest drops.
+            </p>
+            <div class="scroll-down" onclick="scrollToProducts()">⬇</div>
         </div>
-        <div id = "section3" class = "section">Section 3</div>
-        <div id = "section4" class = "section">About US</div>
-        <div class = "section">Section 5</div>
     </div>
+
+    <!-- Products Section -->
+    <div class="products-section" id="products">
+        <div class="products-container">
+            <h2 class="products-title sigmar-one-regular">Our Latest Drops</h2>
+            <div class="products-grid">
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        🏙️
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title sigmar-one-regular">The Tokyo Zipper</h3>
+                        <p class="product-description share-tech-mono-regular">
+                            A unique streetwear piece showcasing Tokyo's multiple facettes. Created by Pablo Corbacho Martinez.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        🌃
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title sigmar-one-regular">Urban Nights</h3>
+                        <p class="product-description share-tech-mono-regular">
+                            Inspired by the neon-lit streets and endless energy of metropolitan nightlife.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        🏢
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title sigmar-one-regular">Skyline Series</h3>
+                        <p class="product-description share-tech-mono-regular">
+                            Capturing the architectural beauty and urban landscapes of world cities.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        🌆
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title sigmar-one-regular">Metro Culture</h3>
+                        <p class="product-description share-tech-mono-regular">
+                            Celebrating the diverse cultures and communities that make cities vibrant.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function scrollToProducts() {
+            document.getElementById('products').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // Add smooth scroll behavior for all internal links
+        document.addEventListener('DOMContentLoaded', function() {
+            const links = document.querySelectorAll('a[href^="#"]');
+            for (let link of links) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+
     {% endblock %}
 </body>
 </html>

@@ -37,12 +37,10 @@ def create_order(cart, price, usr_id, order_adress: None) -> Order:
     Creates a new order with an ID, current date, and a list of products."
     """
     user = User.query.get_or_404(usr_id, "user_id")
-    print(user)
     if order_adress is None:
         order_adress = user.adress
     order_email = user.email
     now = datetime.datetime.now()
-    print(cart, "will be transformed into -> Order// Proceed? -> okay___ Order generating")
 
     if not isinstance(cart, dict):
         raise ValueError("Cart must be a dictionary containing product details.")
@@ -69,6 +67,7 @@ def create_order(cart, price, usr_id, order_adress: None) -> Order:
 
 
 def send_email(to, subject, body):
+    print("SENDING EMAIL")
     sender_email = "around.cities@gmx.de"
     smtp_server = "mail.gmx.net"
     smtp_port = 587

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
+    <link rel="stylesheet" href="{{url_for('main.get_style', filename='index.css')}}">
+    <link rel="stylesheet" href="get_style/fonts.css">
+    <link rel="stylesheet" href="{{ url_for('main.get_style', filename='slideshow.css')}}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Sigmar+One&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOME</title>
+</head>
+<body>
+    {% extends 'headbar.html' %}
+    {% block content %}
+    <div class = "container">
+        <div id = "section1" class = "section">
+            <div>
+               <h1 class="sigmar-one-regular" style="color: black;">
+                    AROUND CITIES
+                </h1>
+                <p class="share-tech-mono-regular">
+                    Welcome to our shop. <br>
+                    Scroll down to see our newest drops.
+                </p>
+                <div class="scroll-down">⬇</div>
+            </div>
+        </div>
+        <div id = "section2" class = "section">
+                <div class="slideshow w3-content w3-display-container">
+                    <img class="mySlides" src="{{ url_for('main.get_image', filename='image3.png')}}">
+                    <img class="mySlides" src="{{ url_for('main.get_image', filename='image3.png')}}">
+                    <img class="mySlides" src="{{ url_for('main.get_image', filename='image3.png')}}">
+                    </div>
+                  </div>
+        </div>
+    </div>
+    {% endblock %}
+</body>
+<script>
+    var myIndex = 0;
+carousel();
+
+function carousel() {
+  var i;
+  var x = document.getElementsByClassName("mySlides");
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";  
+  }
+  myIndex++;
+  if (myIndex > x.length) {myIndex = 1}    
+  x[myIndex-1].style.display = "block";  
+  setTimeout(carousel, 2000); // Change image every 2 seconds
+}
+    </script>
+</html>

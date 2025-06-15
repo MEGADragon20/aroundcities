@@ -9,19 +9,304 @@
     <link rel="stylesheet" href="get_style/fonts.css" type="text/css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>aC - Drops</title> 
+    <title>aC - Drops</title>
+    
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            font-family: "Share Tech Mono", monospace;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #ffffff 100%);
+            min-height: 100vh;
+        }
+
+        .sigmar-one-regular {
+            font-family: "Sigmar One", cursive;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .share-tech-mono-regular {
+            font-family: "Share Tech Mono", monospace;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        /* Main Container */
+        .container {
+            width: 100%;
+            padding: 60px 20px;
+            position: relative;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(90deg, rgba(44,62,80,0.03) 1px, transparent 1px),
+                linear-gradient(rgba(44,62,80,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* Title Styling */
+        .container h1 {
+            text-align: center;
+            font-size: 4rem;
+            margin-bottom: 60px;
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 2;
+            letter-spacing: 3px;
+        }
+
+        .container h1::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #2c3e50, #6c757d, #2c3e50);
+            border-radius: 2px;
+        }
+
+        /* Products Container - Flexbox approach */
+        .products-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .products-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            justify-content: center;
+        }
+
+        /* Product Card */
+        .product {
+            background: #ffffff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            cursor: pointer;
+            border: 1px solid rgba(233, 236, 239, 0.8);
+            position: relative;
+            
+            /* Desktop: 4 columns */
+            flex: 0 0 calc(25% - 30px);
+            max-width: calc(25% - 30px);
+        }
+
+        .product::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.4) 50%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .product:hover::before {
+            opacity: 1;
+        }
+
+        .product:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border-color: #dee2e6;
+        }
+
+        /* Product Image */
+        .product-image-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 100%; /* Creates 1:1 aspect ratio for square images */
+            overflow: hidden;
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+        }
+
+        .product img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .product:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Product Content */
+        .product-content {
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .product h3 {
+            margin: 0 0 15px 0;
+            font-size: 1.8rem;
+            color: #2c3e50;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+            transition: color 0.3s ease;
+        }
+
+        .product h3 a {
+            text-decoration: none !important;
+            color: #2c3e50;
+            transition: color 0.3s ease;
+        }
+
+        .product:hover h3 a {
+            color: #495057;
+        }
+
+        .product p {
+            font-size: 1.3rem;
+            color: #6c757d;
+            margin: 0;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .product {
+                /* Tablet: 3 columns */
+                flex: 0 0 calc(33.333% - 27px);
+                max-width: calc(33.333% - 27px);
+            }
+            
+            .products-grid {
+                gap: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 15px;
+            }
+
+            .container h1 {
+                font-size: 2.5rem;
+                margin-bottom: 40px;
+                letter-spacing: 1px;
+            }
+
+            .products-grid {
+                gap: 20px;
+            }
+
+            .product {
+                /* Mobile: 1 column, use most of the width */
+                flex: 0 0 100%;
+                max-width: 100%;
+                margin: 0 auto;
+            }
+
+            .product h3 {
+                font-size: 1.5rem;
+            }
+
+            .product p {
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 10px;
+            }
+
+            .container h1 {
+                font-size: 2rem;
+            }
+
+            .products-grid {
+                gap: 15px;
+            }
+
+            .product-content {
+                padding: 20px;
+            }
+        }
+
+        /* Smooth scrolling and animations */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .product {
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .product:nth-child(1) { animation-delay: 0.1s; }
+        .product:nth-child(2) { animation-delay: 0.2s; }
+        .product:nth-child(3) { animation-delay: 0.3s; }
+        .product:nth-child(4) { animation-delay: 0.4s; }
+        .product:nth-child(5) { animation-delay: 0.5s; }
+        .product:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
-{% extends 'headbar.html' %} 
+
+{% extends 'headbar.html' %}
+
 {% block content %}
     <div class="container">
-    <h1 class="sigmar-one-regular centered"> DROPS</h1>
-    {% for product in products %}
-    <div class="product">
-        <img src="{{ url_for('main.get_image', foldername=product.id|string, filename=product.image[0]) }}">
-        <h3 class="sigmar-one-regular"><a class="sigmar-one-regular" style="text-decoration: none !important;" href="{{url_for('main.product', id=product.id)}}">{{ product.name }}</a></h3>
-        <p>{{ product.price }}</p>
-    </div>
-    {% endfor %}
+        <h1 class="sigmar-one-regular">DROPS</h1>
+        <div class="products-container">
+            <div class="products-grid">
+                {% for product in products %}
+                <div class="product">
+                    <div class="product-image-container">
+                        <img src="{{ url_for('main.get_image', foldername=product.id|string, filename=product.image[0]) }}" alt="{{ product.name }}">
+                    </div>
+                    <div class="product-content">
+                        <h3 class="sigmar-one-regular">
+                            <a class="sigmar-one-regular" style="text-decoration: none !important;" href="{{url_for('main.product', id=product.id)}}">{{ product.name }}</a>
+                        </h3>
+                        <p class="share-tech-mono-regular">{{ product.price }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 {% endblock %}
+
 </html>

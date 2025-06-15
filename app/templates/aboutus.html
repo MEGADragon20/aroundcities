@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Sigmar+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('main.get_style', filename='fonts.css')}}">
+    <link rel="stylesheet" href="{{url_for('main.get_style', filename='aboutus.css')}}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+</head>
+<body>
+    {% extends 'headbar.html' %}
+    {% block content %}
+    <div class="container">
+        <h1 class="sigmar-one-regular centered">About Us</h1>
+          <p class="share-tech-mono-regular">What’s up! I’m a 13 year old boy from Munich, and I’ve launched my own clothing brand from scratch.</p>
+
+        <p class="share-tech-mono-regular">What makes it different? All my designs are based on cities. Every shirt, hoodie, or piece I drop is inspired by the vibe, energy, and culture of a specific place. From the skyline to the street art, I turn the soul of each city into something you can wear.</p>
+
+        <p class="share-tech-mono-regular">My mission? I want to create a design for every city in the world. Big or small — they all matter. Everyone deserves to rep where they’re from or where they feel at home.</p>
+
+        <p class="share-tech-mono-regular">So whether you’re from New York, Tokyo, London, or Munich— I want you to be able to say: “Yeah, that’s my city. And I’m wearing it.”</p>
+
+        <p class="share-tech-mono-regular">Let’s build this together. One city at a time.</p> 
+    </div>
+    {% endblock %}
+</body>
+</html>
+
+

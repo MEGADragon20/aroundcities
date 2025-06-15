@@ -4,48 +4,445 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Sigmar+One&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('main.get_style', filename='product.css')}}">
     <link rel="stylesheet" href="get_style/fonts.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{product.name}}</title>
+    
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            font-family: "Share Tech Mono", monospace;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #ffffff 100%);
+            min-height: 100vh;
+        }
+
+        .sigmar-one-regular {
+            font-family: "Sigmar One", cursive;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .share-tech-mono-regular {
+            font-family: "Share Tech Mono", monospace;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        /* Main Container */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            position: relative;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(90deg, rgba(44,62,80,0.03) 1px, transparent 1px),
+                linear-gradient(rgba(44,62,80,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* Product Title */
+        .container h1 {
+            text-align: center;
+            font-size: 3.5rem;
+            margin-bottom: 40px;
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 2;
+            letter-spacing: 2px;
+        }
+
+        .container h1::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, #2c3e50, #6c757d, #2c3e50);
+            border-radius: 2px;
+        }
+
+        /* Product Layout */
+        .product-layout {
+            display: flex;
+            gap: 60px;
+            margin-bottom: 60px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Product Image */
+        .product-image {
+            flex: 1;
+            max-width: 500px;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            transition: transform 0.4s ease;
+        }
+
+        .product-image img:hover {
+            transform: scale(1.02);
+        }
+
+        /* Product Info */
+        .product-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .product-info p {
+            font-size: 1.2rem;
+            color: #495057;
+            line-height: 1.8;
+            margin: 0;
+            text-align: justify;
+        }
+
+        .product-info cite {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            font-weight: 600;
+            font-style: normal;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        /* Form Styling */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid rgba(233, 236, 239, 0.8);
+        }
+
+        select, button {
+            padding: 15px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-family: "Share Tech Mono", monospace;
+            font-size: 1.1rem;
+            background: white;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        select:hover, select:focus {
+            border-color: #6c757d;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(108, 117, 125, 0.1);
+        }
+
+        button {
+            background: linear-gradient(135deg, #2c3e50, #495057);
+            color: white;
+            border: none;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #495057, #6c757d);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        /* Back Link */
+        .back-link {
+            display: inline-block;
+            margin: 40px 0;
+            padding: 12px 25px;
+            background: white;
+            color: #2c3e50;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 500;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .back-link:hover {
+            background: #2c3e50;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        /* Accordion Styling */
+        #accordion {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        #accordion li {
+            background: white;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border: 1px solid rgba(233, 236, 239, 0.8);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        #accordion li:hover {
+            box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+        }
+
+        #accordion input[type="checkbox"] {
+            position: absolute;
+            left: -9999px;
+        }
+
+        #accordion i {
+            position: absolute;
+            transform: translate(-6px, 0);
+            margin-top: 25px;
+            right: 25px;
+            width: 15px;
+            height: 15px;
+            cursor: pointer;
+        }
+
+        #accordion i:before,
+        #accordion i:after {
+            content: "";
+            position: absolute;
+            background-color: #2c3e50;
+            width: 15px;
+            height: 2px;
+            border-radius: 1px;
+            transition: all 0.3s ease;
+        }
+
+        #accordion i:before {
+            transform: translate(-2px, 0) rotate(0deg);
+        }
+
+        #accordion i:after {
+            transform: translate(-2px, 0) rotate(90deg);
+        }
+
+        #accordion input[type="checkbox"]:checked ~ i:before {
+            transform: translate(2px, 0) rotate(45deg);
+        }
+
+        #accordion input[type="checkbox"]:checked ~ i:after {
+            transform: translate(2px, 0) rotate(-45deg);
+        }
+
+        #accordion h3 {
+            position: relative;
+            margin: 0;
+            padding: 25px 60px 25px 25px;
+            color: #2c3e50;
+            font-size: 1.3rem;
+            cursor: pointer;
+            background: linear-gradient(135deg, #f8f9fa, #ffffff);
+            transition: all 0.3s ease;
+        }
+
+        #accordion h3:hover {
+            background: linear-gradient(135deg, #e9ecef, #f8f9fa);
+        }
+
+        #accordion li p {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 25px;
+            color: #495057;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+
+        #accordion input[type="checkbox"]:checked ~ p {
+            max-height: 1000px;
+            padding: 0 25px 25px 25px;
+        }
+
+        /* Animations */
+        .flipIn {
+            animation: flipIn 0.6s ease forwards;
+            opacity: 0;
+            transform: rotateY(-90deg);
+        }
+
+        .flipIn:nth-child(1) { animation-delay: 0.1s; }
+        .flipIn:nth-child(2) { animation-delay: 0.2s; }
+        .flipIn:nth-child(3) { animation-delay: 0.3s; }
+        .flipIn:nth-child(4) { animation-delay: 0.4s; }
+        .flipIn:nth-child(5) { animation-delay: 0.5s; }
+        .flipIn:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes flipIn {
+            to {
+                opacity: 1;
+                transform: rotateY(0deg);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 15px;
+            }
+
+            .container h1 {
+                font-size: 2.5rem;
+                margin-bottom: 30px;
+                letter-spacing: 1px;
+            }
+
+            .product-layout {
+                flex-direction: column;
+                gap: 30px;
+                margin-bottom: 40px;
+            }
+
+            .product-image {
+                max-width: 100%;
+            }
+
+            .product-info cite {
+                font-size: 2rem;
+                text-align: center;
+            }
+
+            form {
+                padding: 20px;
+            }
+
+            select, button {
+                padding: 12px 15px;
+                font-size: 1rem;
+            }
+
+            #accordion h3 {
+                font-size: 1.1rem;
+                padding: 20px 50px 20px 20px;
+            }
+
+            #accordion li p {
+                font-size: 1rem;
+            }
+
+            #accordion input[type="checkbox"]:checked ~ p {
+                padding: 0 20px 20px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 10px;
+            }
+
+            .container h1 {
+                font-size: 2rem;
+            }
+
+            .product-info cite {
+                font-size: 1.8rem;
+            }
+
+            form {
+                padding: 15px;
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
 </head>
-<body> 
+<body>
     {% extends 'headbar.html' %}
     {% block content %}
     <div class="container">
         <h1 class="share-tech-mono-regular">{{product.name}}</h1>
-        <img class="flipIn" src="{{ url_for('main.get_image', filename=product.image[0], foldername=product.id|string) }}">
-        <p class="flipIn">{{ product.description }}</p>
         
-        <cite>{{product.price}}</cite>
-        {% if not outoforder %}
-        <form method="post" action="{{ url_for('main.add_to_cart')}}">
-            <input type="hidden" name="product_id" value="{{ product.id }}">
-            <select class="flipIn" name="modification">
-                {% for modification in product.modifications %}
-                <option value="{{modification}}">{{modification}}</option>
-                {% endfor %}
-            </select>
-            <select class="flipIn" name="size">
-                <option value="XS">XS</option>
-                <option value="S">S</option>
-                <option value="M">M</option>
-                <option value="L">L</option>
-                <option value="XL">XL</option>
-                <option value="XXL">XXL</option>
-            </select>
-            <button class="flipIn" type="submit">Add to Cart</button>
-        </form>
-        {% endif %}
-        {% if outoforder %}
-        <form action="{{ url_for('main.add_to_waitlist', product_id=product.id) }}">
-            <input type="hidden" name="product_id" value="{{product.id}}">
-            <button class="flipIn" type="submit">Waitlist</button>
-
-        </form>
-        {% endif %}
-        <a href="{{ url_for('main.products')}}" style="margin-bottom: 30px; padding-bottom: 30px;">Back to Products</a>
+        <div class="product-layout">
+            <div class="product-image">
+                <img class="flipIn" src="{{ url_for('main.get_image', filename=product.image[0], foldername=product.id|string) }}" alt="{{product.name}}">
+            </div>
+            
+            <div class="product-info">
+                <p class="flipIn">{{ product.description }}</p>
+                <cite class="flipIn">{{product.price}}</cite>
+                
+                {% if not outoforder %}
+                <form method="post" action="{{ url_for('main.add_to_cart')}}">
+                    <input type="hidden" name="product_id" value="{{ product.id }}">
+                    <select class="flipIn" name="modification">
+                        {% for modification in product.modifications %}
+                        <option value="{{modification}}">{{modification}}</option>
+                        {% endfor %}
+                    </select>
+                    <select class="flipIn" name="size">
+                        <option value="XS">XS</option>
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                        <option value="XL">XL</option>
+                        <option value="XXL">XXL</option>
+                    </select>
+                    <button class="flipIn" type="submit">Add to Cart</button>
+                </form>
+                {% endif %}
+                
+                {% if outoforder %}
+                <form action="{{ url_for('main.add_to_waitlist', product_id=product.id) }}">
+                    <input type="hidden" name="product_id" value="{{product.id}}">
+                    <button class="flipIn" type="submit">Waitlist</button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+        
+        <a href="{{ url_for('main.products')}}" class="back-link">← Back to Products</a>
+        
         <ul id="accordion">
             <li>
                 <input type="checkbox" checked>
@@ -60,13 +457,11 @@
                 <i></i>
                 <h3 class="share-tech-mono-regular">Shipping & Return</h3>
                 <p>Please enter your shipping and billing information using only English characters, without emojis, to ensure timely processing.</p>
-                    <br>
+                <br>
                 <p>Orders are shipped within 5-14 business days. If you place an order on a holiday, it will be processed on the next business day. Once your order has shipped, you will receive a separate email with tracking details. The estimated delivery time is 5-14 business days from the shipment date.</p>
-                
             </li>
         </ul>
     </div>
     {% endblock %}
-    
 </body>
 </html>
