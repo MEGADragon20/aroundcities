@@ -29,7 +29,7 @@ The most important ones are
 a) __init__.py (called by app2.py)
 b) routes.py (manages the routes on the website) -- if you don't understand this stuff simply paste it into chatgpt. it's REALLY good at resuming the different paths
 
-In models, forms, etc are templates for the db and the user login
+In models, forms, etc are templates for the db and the user logi
 
 functions is just a random sheet for functions, that would distract in routes
 
@@ -42,6 +42,16 @@ Okay, you can activate the website via waitress too:
 in the virtual environment execute::
     waitress-serve --listen=127.0.0.1:5050 app2:app
 
+I added nginx as a reverse proxy on the laptop. 
+
+added port 5050 on the config file
+
+to tunnle out of the network use Ngrok
+
+first deactivate the IPv6 on linux
+sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1 (set to 0 to reactivate)
+then
+ngrok 8000
 
 btw TODO's:
 logging user requests || DONE

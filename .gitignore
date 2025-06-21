@@ -1,6 +1,4 @@
 .env
 /venv
-*.crt
-*.prt
 web_log.txt
 /static/uploads
