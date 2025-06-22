@@ -45,15 +45,19 @@ in the virtual environment execute::
 I added nginx as a reverse proxy on the laptop. 
 
 added port 5050 on the config file
+you can start nginx (although it should be autostarted) via 
+    sudo systemctl start nginx
 
 to tunnle out of the network use Ngrok
 
 first deactivate the IPv6 on linux
 sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1 (set to 0 to reactivate)
 then
-ngrok 8000
+ngrok http 8000
 
 btw TODO's:
 logging user requests || DONE
 change GMX to IONOS with domain etc 
 test preorder functionspgadmin4  || DONE
+Multiple images per products
+packaging cost ()
