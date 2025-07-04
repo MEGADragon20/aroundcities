@@ -15,7 +15,10 @@
             overflow-x: hidden;
             font-family: "Share Tech Mono", monospace;
         }
-
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
         .sigmar-one-regular {
             font-family: "Sigmar One", cursive;
             font-weight: 400;
@@ -251,9 +254,9 @@
                         🏙️
                     </div>
                     <div class="product-content">
-                        <h3 class="product-title sigmar-one-regular">The Tokyo Zipper</h3>
+                        <h3 class="product-title sigmar-one-regular"> <a href="{{ url_for('main.tracker') }}">The Tracker</a></h3>
                         <p class="product-description share-tech-mono-regular">
-                            A unique streetwear piece showcasing Tokyo's multiple facettes. Created by Pablo Corbacho Martinez.
+                            Check which cities are trending right now and discover the latest urban vibes.
                         </p>
                     </div>
                 </div>

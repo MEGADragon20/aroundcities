@@ -1,5 +1,212 @@
-<h1> dashboard </h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <link rel="stylesheet" href="get_style/fonts.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Sigmar+One&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DASHBOARD</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-{% if current_user.is_authenticated %}
-Hi {{ current_user.username }}!
-{% endif %}
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            font-family: "Share Tech Mono", monospace;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #ffffff 100%);
+            min-height: 100vh;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        .sigmar-one-regular {
+            font-family: "Sigmar One", cursive;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .share-tech-mono-regular {
+            font-family: "Share Tech Mono", monospace;
+            font-weight: 400;
+            font-style: normal;
+        }
+        .orders-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            position: relative;
+        }
+        .orders-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(90deg, rgba(44,62,80,0.03) 1px, transparent 1px),
+                linear-gradient(rgba(44,62,80,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        .center {
+            text-align: center;
+            z-index: 2;
+            position: relative;
+
+
+        }
+        .centered {
+            text-align: center;
+            font-size: 4rem;
+            margin-bottom: 50px;
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 2;
+            letter-spacing: 3px;
+        }
+
+        .centered::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #2c3e50, #6c757d, #2c3e50);
+            border-radius: 2px;
+        }
+
+        .cart-orders {
+            position: relative;
+            z-index: 2;
+            margin-bottom: 40px;
+        }
+
+        .order {
+            margin: 20px 0;
+            padding: 25px;
+            background: white;
+            border: 2px solid rgba(44, 62, 80, 0.1);
+            border-style: dotted;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .order::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.4) 50%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .order:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+            border-color: rgba(44, 62, 80, 0.2);
+        }
+
+        .order:hover::before {
+            opacity: 1;
+        }
+
+        .order a {
+            color: #2c3e50;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        .order a:hover {
+            color: #495057;
+        }
+
+        .order span {
+            display: inline-block;
+            padding: 8px 15px;
+            margin: 5px 8px;
+            background: rgba(248, 249, 250, 0.8);
+            border-radius: 8px;
+            color: #495057;
+            font-size: 1rem;
+            border: 1px solid rgba(233, 236, 239, 0.6);
+            transition: all 0.3s ease;
+        }
+
+        .order span:hover {
+            background: rgba(233, 236, 239, 0.8);
+            border-color: rgba(108, 117, 125, 0.3);
+        }
+        .logout-button {
+            background: linear-gradient(135deg, tomato, rgb(209, 63, 37)) !important;
+            color: white !important;
+            border: none !important;
+            cursor: pointer;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+            transition: all 0.3s ease !important;
+        }
+        .logout-button:hover {
+             background: linear-gradient(135deg, rgb(245, 28, 28), rgb(209, 63, 37)) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4) !important;
+        }
+        .logout-button a {
+            color: white !important;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+    </style>
+</head> 
+<body>
+    {% extends "headbar.html" %}
+    {% block content %}
+    <div class="orders-container">
+        <h1 class="centered sigmar-one-regular">Dashboard</h1>
+        <div class="order">{% if current_user.is_authenticated %}
+            <p class="center">Hi {{ current_user.username }}!</p>
+        {% endif %}
+        <span class="logout-button">
+            <a href="{{ url_for('main.logout') }}" class="share-tech-mono-regular">logout</a>
+        </button>
+    </div>
+        <div class="cart-orders">
+            {% if orders %}
+                {% for order in orders %}
+                    <div class="order">
+                        <span>Order ID: {{ order.id }}</span>
+                        <span>Status: {{ order.status }}</span>
+                        <span>Total: {{ order.total_price/100 }} €</span>
+                    </div>
+                {% endfor %}
+            {% else %}
+            <div class="order">
+                <p class="center">You've got no orders... time to make some!</p>
+            </div>
+                {% endif %}
+        </div>
+{% endblock %}
+</body></html>

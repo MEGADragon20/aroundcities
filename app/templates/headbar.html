@@ -6,64 +6,376 @@
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Sigmar+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="get_style/fonts.css" type="text/css">
-    <link rel="stylesheet" href="get_style/headbar.css" type="text/css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <style>
+        .sigmar-one-regular {
+            font-family: "Sigmar One", cursive;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .share-tech-mono-regular {
+            font-family: "Share Tech Mono", monospace;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Share Tech Mono", monospace;
+            padding-top: 70px; /* Space for fixed header */
+        }
+
+        /* Header Container */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .header.scrolled {
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Navigation Container */
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            height: 70px;
+        }
+
+        /* Logo */
+        .logo {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            padding: 8px;
+            background-color: #2c3e50;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+            background-color: #34495e;
+        }
+
+        /* Desktop Navigation */
+        .desktop-nav {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .desktop-nav a {
+            font-size: 18px;
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 500;
+            letter-spacing: 1px;
+            position: relative;
+            transition: all 0.3s ease;
+            padding: 10px 0;
+        }
+
+        .desktop-nav a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #2c3e50, #34495e);
+            transform: translateX(-50%);
+            transition: width 0.3s ease;
+        }
+
+        .desktop-nav a:hover {
+            color: #34495e;
+            transform: translateY(-2px);
+        }
+
+        .desktop-nav a:hover::before {
+            width: 100%;
+        }
+
+        /* Mobile Hamburger Menu */
+        .hamburger-menu {
+            display: none;
+            cursor: pointer;
+            width: 30px;
+            height: 25px;
+            position: relative;
+            z-index: 1001;
+        }
+
+        .hamburger-menu .line {
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background-color: #2c3e50;
+            border-radius: 2px;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            left: 0;
+        }
+
+        .hamburger-menu .line:nth-child(1) {
+            top: 0;
+        }
+
+        .hamburger-menu .line:nth-child(2) {
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .hamburger-menu .line:nth-child(3) {
+            bottom: 0;
+        }
+
+        /* Hamburger Animation */
+        .hamburger-menu.open .line {
+            background-color: white;
+        }
+
+        .hamburger-menu.open .line:nth-child(1) {
+            transform: rotate(45deg);
+            top: 50%;
+            margin-top: -1.5px;
+        }
+
+        .hamburger-menu.open .line:nth-child(2) {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+
+        .hamburger-menu.open .line:nth-child(3) {
+            transform: rotate(-45deg);
+            bottom: 50%;
+            margin-bottom: -1.5px;
+        }
+
+        /* Mobile Popup */
+        .mobile-popup {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(44, 62, 80, 0.95), rgba(52, 73, 94, 0.95));
+            backdrop-filter: blur(20px);
+            z-index: 999;
+            transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mobile-popup.open {
+            right: 0;
+        }
+
+        .mobile-popup-content {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .mobile-popup-content a {
+            display: block;
+            font-size: 28px;
+            color: white;
+            text-decoration: none;
+            margin: 25px 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            position: relative;
+            letter-spacing: 2px;
+        }
+
+        .mobile-popup.open .mobile-popup-content a {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .mobile-popup-content a:nth-child(1) { transition-delay: 0.1s; }
+        .mobile-popup-content a:nth-child(2) { transition-delay: 0.2s; }
+        .mobile-popup-content a:nth-child(3) { transition-delay: 0.3s; }
+        .mobile-popup-content a:nth-child(4) { transition-delay: 0.4s; }
+
+        .mobile-popup-content a::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: white;
+            transform: translateX(-50%);
+            transition: width 0.3s ease;
+        }
+
+        .mobile-popup-content a:hover::before {
+            width: 60px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .desktop-nav {
+                display: none;
+            }
+
+            .hamburger-menu {
+                display: block;
+            }
+
+            .nav-container {
+                padding: 0 15px;
+                height: 60px;
+            }
+
+            .logo {
+                width: 40px;
+                height: 40px;
+                padding: 6px;
+            }
+
+            body {
+                padding-top: 60px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .mobile-popup-content a {
+                font-size: 24px;
+                margin: 20px 0;
+            }
+        }
+
+        /* Scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
 </head>
 
 <body>
     {% block headbar %}
-    <div class="hamburger-menu" id="hamburgerMenu">
-      <div class="line"></div>
-      <div class="line"></div>
-      <div class="line"></div>
-  </div>
-    <a href="{{url_for('main.home')}}#section4"><img src="{{url_for('main.get_icon', filename='logo.png')}}" alt="Logo Image" class="logo"></a>
+    <!-- Header -->
+    <header class="header" id="header">
+        <nav class="nav-container">
+            <!-- Logo -->
+            <a href="{{url_for('main.home')}}#section4">
+                <img src="{{url_for('main.get_icon', filename='logo.png')}}" alt="Logo Image" class="logo">
+            </a>
 
-    <div id="popup" class="popup">
-        <div class="popup-content">
-            <a id="home" class="sigmar-one-regular" href="{{ url_for('main.home') }}">Home</a>
-            <br>
-            <br>
-            <a id="products" class="sigmar-one-regular" href="{{ url_for('main.products') }}">Drops</a>
-            <br>
-            <br>
-            <a id="search" class="sigmar-one-regular" href="{{ url_for('main.login') }}">Login</a>
-            <br>
-            <br>
-            <a id="cart" class="sigmar-one-regular" href="{{ url_for('main.cart') }}">Cart</a>
+            <!-- Desktop Navigation -->
+            <div class="desktop-nav">
+                <a href="{{ url_for('main.home') }}" class="sigmar-one-regular">Home</a>
+                <a href="{{ url_for('main.products') }}" class="sigmar-one-regular">Drops</a>
+                <a href="{{ url_for('main.login') }}" class="sigmar-one-regular">Login</a>
+                <a href="{{ url_for('main.cart') }}" class="sigmar-one-regular">Cart</a>
+            </div>
+
+            <!-- Mobile Hamburger -->
+            <div class="hamburger-menu" id="hamburgerMenu">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Mobile Popup -->
+    <div class="mobile-popup" id="mobilePopup">
+        <div class="mobile-popup-content">
+            <a href="{{ url_for('main.home') }}" class="sigmar-one-regular">Home</a>
+            <a href="{{ url_for('main.products') }}" class="sigmar-one-regular">Drops</a>
+            <a href="{{ url_for('main.login') }}" class="sigmar-one-regular">Login</a>
+            <a href="{{ url_for('main.cart') }}" class="sigmar-one-regular">Cart</a>
         </div>
     </div>
     {% endblock %}
 
     <script>
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
 
-const hamburger = document.getElementById("hamburgerMenu");
-const popup = document.getElementById("popup");
-const closeBtn = document.getElementById("closeBtn");
+        // Mobile menu toggle
+        const hamburger = document.getElementById('hamburgerMenu');
+        const mobilePopup = document.getElementById('mobilePopup');
 
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('open');
+            mobilePopup.classList.toggle('open');
+            
+            // Prevent body scroll when menu is open
+            if (mobilePopup.classList.contains('open')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        });
 
-hamburger.addEventListener("click", () => {
-  if (hamburger.classList.contains("open")) {
-    hamburger.classList.remove("open");
-    popup.classList.remove("open");
-  } else {
-    hamburger.classList.add("open");
-    popup.classList.add("open");
-  }
-});
+        // Close mobile menu when clicking on links
+        const mobileLinks = document.querySelectorAll('.mobile-popup-content a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('open');
+                mobilePopup.classList.remove('open');
+                document.body.style.overflow = '';
+            });
+        });
 
+        // Close mobile menu when clicking outside
+        mobilePopup.addEventListener('click', (e) => {
+            if (e.target === mobilePopup) {
+                hamburger.classList.remove('open');
+                mobilePopup.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+        });
 
-popup.addEventListener("click", (event) => {
-    if (event.target === popup) {
-        popup.style.display = "none";
-    }
-});
-
-
-        </script>
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
 
     {% block content %}{% endblock %}
-
 </body>
 </html>

@@ -32,21 +32,21 @@ def transform_out_euro(number: str) -> int:
     return int(float(only_float) * 100)
 
 
-def create_order(cart, price, usr_id, order_adress: None) -> Order:
+def create_order(cart, price, usr_id, order_address: None) -> Order:
     """
     Creates a new order with an ID, current date, and a list of products."
     """
     user = User.query.get_or_404(usr_id, "user_id")
-    if order_adress is None:
-        order_adress = user.adress
+    if order_address is None:
+        order_address = user.address
     order_email = user.email
     now = datetime.datetime.now()
 
     if not isinstance(cart, dict):
         raise ValueError("Cart must be a dictionary containing product details.")
 
-    if isinstance(order_adress, dict):
-        order_adress = json.dumps(order_adress)
+    if isinstance(order_address, dict):
+        order_address = json.dumps(order_address)
 
     if isinstance(cart, str):
         cart = json.loads(cart)
@@ -58,7 +58,7 @@ def create_order(cart, price, usr_id, order_adress: None) -> Order:
         products=cart,
         total_price = price,
         status="pending",
-        address= order_adress,
+        address= order_address,
         email = order_email
     )
     db.session.add(order)

@@ -1,9 +1,312 @@
-<div>
-  <form method="POST">
-    {{ form.hidden_tag() }}
-    <p>{{ form.email.label }} {{ form.email }}</p>
-    <p>{{ form.password.label }} {{ form.password }}</p>
-    <p>{{ form.submit }}</p>
-  </form>
-  <p>Don't have an account? <a href="{{ url_for('main.signup') }}">Sign Up</a></p>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Sigmar+One&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            font-family: "Share Tech Mono", monospace;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #ffffff 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sigmar-one-regular {
+            font-family: "Sigmar One", cursive;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .share-tech-mono-regular {
+            font-family: "Share Tech Mono", monospace;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        /* Main Container */
+        .login-container {
+            width: 100%;
+            max-width: 450px;
+            margin: 40px 20px;
+            padding: 50px;
+            position: relative;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            border: 1px solid rgba(233, 236, 239, 0.8);
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(90deg, rgba(44,62,80,0.02) 1px, transparent 1px),
+                linear-gradient(rgba(44,62,80,0.02) 1px, transparent 1px);
+            background-size: 30px 30px;
+            opacity: 0.3;
+            pointer-events: none;
+            border-radius: 20px;
+        }
+
+        /* Title */
+        .login-title {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 50px;
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 2;
+            letter-spacing: 2px;
+        }
+
+        .login-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, #2c3e50, #6c757d, #2c3e50);
+            border-radius: 2px;
+        }
+
+        /* Form Styling */
+        .login-form {
+            position: relative;
+            z-index: 2;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1rem;
+            color: #495057;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-family: "Share Tech Mono", monospace;
+            font-size: 1rem;
+            background: white;
+            transition: all 0.3s ease;
+            color: #495057;
+        }
+
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            border-color: #2c3e50;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.1);
+            transform: translateY(-1px);
+        }
+
+        input[type="email"]:hover,
+        input[type="password"]:hover {
+            border-color: #6c757d;
+        }
+
+        /* Submit Button */
+        .submit-button {
+            width: 100%;
+            padding: 18px 20px;
+            background: linear-gradient(135deg, #2c3e50, #495057);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-family: "Share Tech Mono", monospace;
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .submit-button:hover {
+            background: linear-gradient(135deg, #495057, #6c757d);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+        }
+
+        .submit-button:active {
+            transform: translateY(0);
+        }
+
+        /* Sign Up Link */
+        .signup-link {
+            text-align: center;
+            margin-top: 35px;
+            padding: 20px;
+            background: rgba(248, 249, 250, 0.8);
+            border-radius: 10px;
+            font-size: 1rem;
+            color: #495057;
+            border: 1px solid rgba(233, 236, 239, 0.6);
+        }
+
+        .signup-link a {
+            color: #2c3e50;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .signup-link a:hover {
+            background: #2c3e50;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        /* Animation */
+        .fade-in {
+            animation: fadeIn 0.6s ease forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .fade-in:nth-child(1) { animation-delay: 0.1s; }
+        .fade-in:nth-child(2) { animation-delay: 0.2s; }
+        .fade-in:nth-child(3) { animation-delay: 0.3s; }
+        .fade-in:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Back Link */
+        .back-link {
+            display: inline-block;
+            margin-bottom: 30px;
+            padding: 12px 25px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #2c3e50;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 500;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 3;
+        }
+
+        .back-link:hover {
+            background: #2c3e50;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .login-container {
+                margin: 20px 15px;
+                padding: 30px 25px;
+            }
+
+            .login-title {
+                font-size: 2.2rem;
+                margin-bottom: 40px;
+                letter-spacing: 1px;
+            }
+
+            input[type="email"],
+            input[type="password"] {
+                padding: 12px 15px;
+                font-size: 0.95rem;
+            }
+
+            .submit-button {
+                padding: 15px 20px;
+                font-size: 1.1rem;
+            }
+
+            .signup-link {
+                font-size: 0.95rem;
+                padding: 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                margin: 10px;
+                padding: 25px 20px;
+            }
+
+            .login-title {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <a href="/" class="back-link">← Back to Home</a>
+        
+        <h1 class="login-title sigmar-one-regular">Login</h1>
+        
+        <form method="POST" class="login-form">
+            {{ form.hidden_tag() }}
+            
+            <div class="form-group fade-in">
+                <label for="email">{{ form.email.label.text }}</label>
+                {{ form.email(id="email", type="email") }}
+            </div>
+            
+            <div class="form-group fade-in">
+                <label for="password">{{ form.password.label.text }}</label>
+                {{ form.password(id="password") }}
+            </div>
+            
+            <div class="fade-in">
+                {{ form.submit(class="submit-button") }}
+            </div>
+        </form>
+        
+        <div class="signup-link fade-in">
+            Don't have an account? <a href="{{ url_for('main.signup') }}">Sign Up</a>
+        </div>
+    </div>
+</body>
+</html>

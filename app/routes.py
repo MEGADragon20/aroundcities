@@ -66,14 +66,14 @@ def signup():
         if User.query.filter_by(email=form.email.data).first():
             flash("Email already registered!", "danger")
             return redirect(url_for("main.signup"))
-        adress = {
+        address = {
             "street": form.street.data,
             "number": form.number.data,
             "city": form.city.data,
             "country": form.country.data,
             "postal_code": form.postal_code.data,
         }
-        new_user = User(username=form.username.data, email=form.email.data, adress=adress)
+        new_user = User(username=form.username.data, email=form.email.data, address=address)
         new_user.set_password(form.password.data)
         db.session.add(new_user)
         db.session.commit()
@@ -217,11 +217,11 @@ def pay_cart():
     try:
         cart = session.get('cart', {})
         current_user_id = current_user.id
-        current_user_adress = current_user.adress
+        current_user_address = current_user.address
         price_to_pay = request.get_json().get('amount', 1000)
         currency = request.form.get('currency', 'eur')
         payment_intent = stripe.PaymentIntent.create(amount=price_to_pay,currency=currency)
-        create_order(cart=cart, price=price_to_pay, usr_id=current_user_id, order_adress=current_user_adress)
+        create_order(cart=cart, price=price_to_pay, usr_id=current_user_id, order_address=current_user_address)
         return jsonify({"clientSecret": payment_intent.client_secret})
 
         
@@ -238,7 +238,9 @@ def pay_cart():
 @main.route("/dashboard")
 @login_required
 def dashboard():
-    return render_template("dashboard.html")
+    orders = Order.query.filter_by(user_id=current_user.id).all()
+    print("orders", orders)
+    return render_template("dashboard.html", orders=orders)
 
 @main.route("/test")
 @login_required

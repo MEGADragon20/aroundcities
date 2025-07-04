@@ -60,4 +60,7 @@ logging user requests || DONE
 change GMX to IONOS with domain etc 
 test preorder functionspgadmin4  || DONE
 Multiple images per products
-packaging cost ()
+packaging cost () with easypost
+make sure user is logged in to pay
+dashboard
+order details
