@@ -3,10 +3,13 @@ import datetime, json
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-import os
+import os, easypost
 from dotenv import load_dotenv
-load_dotenv()
 
+
+
+load_dotenv()
+easypost.api_key = "YOUR_TEST_API_KEY"
 
 
 
@@ -90,3 +93,55 @@ def send_email(to, subject, body):
         print(f"email to {to}.")
     except Exception as e:
         print(f"error sending email to {to}: {e}")
+
+def get_my_address():
+    """
+    Returns the address of the sender.
+    This is used for shipping calculations.
+    """
+    street = os.getenv("MY_street")
+    city = os.getenv("MY_city")
+    zip_code = os.getenv("MY_zip")
+    country = os.getenv("MY_country")
+
+    return {
+        "street1": street,
+        "city": city,
+        "zip": zip_code,
+        "country": country
+    }
+
+def get_shipping_cost_easypost(address, weight_grams):
+    # Convert to ounces (EasyPost uses oz)
+    weight_oz = weight_grams / 28.3495
+
+    # Setup from/to address
+    to_address = {
+        "street1": address["street"],
+        "city": address["city"],
+        "zip": address["zip"],
+        "country": address["country"]
+    }
+
+    from_address = get_my_address()
+
+    # Create shipment
+    parcel = easypost.Parcel.create(
+        length=20,
+        width=15,
+        height=5,
+        weight=weight_oz
+    )
+
+    shipment = easypost.Shipment.create(
+        to_address=to_address,
+        from_address=from_address,
+        parcel=parcel
+    )
+
+    # Get the cheapest rate
+    lowest = shipment.lowest_rate()
+    return float(lowest.rate)
+
+
+

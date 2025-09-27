@@ -6,10 +6,13 @@ from .forms import SignupForm, LoginForm
 from werkzeug.utils import secure_filename
 from .functions import transform_in_euro, transform_out_euro, create_order, send_email
 from sqlalchemy.sql import text
-import flask, os, stripe, logging, json
+import flask, os, stripe, logging, json, easypost
 main = Blueprint("main", __name__)
 
-API_KEY = "1234"
+easypost.api_key = "YOUR_TEST_API_KEY" #TODO
+API_KEY = "1234" #TODO: Change this to a secure key
+
+
 logging.basicConfig(filename='web_log.txt', level=logging.INFO, format='%(asctime)s %(message)s')
 @main.before_request
 def log_request_info(): 
@@ -167,19 +170,6 @@ def remove_from_cart(ucic): #? Needs to be checked pls
     flash("Product removed from cart!", "success")
     return redirect(url_for("main.cart"))
 
-@main.route("/submit_cart", methods=["GET"])
-def submit_cart():
-    cart = session.get('cart', {})
-    total_price = 0
-    for ucic, stuff in cart.items():
-        product = Product.query.get(stuff["product_id"])
-        price = product.price 
-        price = transform_out_euro(price)* stuff['count']
-        total_price += price
-    print("total", total_price)
-    total_price_str = transform_in_euro(total_price)
-    flash("Cart submitted!", "success")
-    return render_template("pay.html", total_price=total_price, total_price_str= total_price_str)
 
 
 @main.route("/tracker")
@@ -210,6 +200,38 @@ def tracker():
 
 
 #! Profile
+
+@main.route("/submit_cart", methods=["GET"])
+@login_required
+def submit_cart():
+    cart = session.get('cart', {})
+    total_price = 0
+    total_weight = 0
+
+    for ucic, stuff in cart.items():
+        product = Product.query.get(stuff["product_id"])
+        price = transform_out_euro(product.price) * stuff['count']
+        total_price += price
+        total_weight += 300 * stuff['count']  # in grams
+
+    # Get user address
+    address = current_user.address
+
+    try:
+        shipping_cost = get_shipping_cost_easypost(address, total_weight)
+    except Exception as e:
+        print("EasyPost failed:", e)
+        flash("Shipping estimate failed. Using default price.", "warning")
+        shipping_cost = 9.90
+
+    total_price += shipping_cost
+    total_price_str = transform_in_euro(total_price)
+
+    return render_template("pay.html",
+                           total_price=total_price,
+                           total_price_str=total_price_str,
+                           shipping=shipping_cost)
+
 
 @main.route("/pay_cart", methods=["POST"])
 @login_required
