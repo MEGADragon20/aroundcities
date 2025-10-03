@@ -1,20 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="get_style/fonts.css" type="text/css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Sigmar+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="static/styles/admin_products.css" type="text/css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Admin – Orders</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 2rem;
+            background: #0f172a;
+            font-family: 'Share Tech Mono', monospace;
+            color: #f1f5f9;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #38bdf8;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+            letter-spacing: 1px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+
+        thead {
+            background: #1e293b;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+        }
+
+        th {
+            color: #38bdf8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        tbody tr:nth-child(even) {
+            background: rgba(255,255,255,0.03);
+        }
+
+        tbody tr:hover {
+            background: rgba(56,189,248,0.15);
+            transition: background 0.2s;
+        }
+
+        a.view-link {
+            display: inline-block;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            text-decoration: none;
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            color: white;
+            font-size: 0.9rem;
+            transition: all 0.2s ease-in-out;
+        }
+
+        a.view-link:hover {
+            background: linear-gradient(135deg, #2563eb, #38bdf8);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+    </style>
 </head>
 <body>
+    <h1>Orders</h1>
+
     <table>
         <thead>
             <tr>
                 <th>ID</th>
                 <th>User</th>
-                <th>price</th>
-                <th>status</th>
-                <th>date</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th>Date</th>
                 <th>View</th>
             </tr>
         </thead>
@@ -23,10 +101,10 @@
             <tr>
                 <td>{{ order.id }}</td>
                 <td>{{ order.user_id }}</td>
-                <td>{{ order.total_price }}</td>
+                <td>${{ order.total_price }}</td>
                 <td>{{ order.status }}</td>
-                <td>{{ order.date}}</td>
-                <td><a href="/admin/order/{{ order.id }}">View</a></td>
+                <td>{{ order.date }}</td>
+                <td><a class="view-link" href="/admin/order/{{ order.id }}">View</a></td>
             </tr>
             {% endfor %}
         </tbody>

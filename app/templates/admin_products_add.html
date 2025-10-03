@@ -1,39 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin – Add Product</title>
+
+  <!-- keep your fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Sigmar+One&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#0f172a;
+      --card: rgba(255,255,255,0.05);
+      --muted:#94a3b8;
+      --accent:#38bdf8;
+      --btn-grad: linear-gradient(135deg,#1e3a8a,#2563eb);
+    }
+
+    html,body { height:100%; }
+    body {
+      margin:0;
+      background:var(--bg);
+      font-family:'Share Tech Mono', monospace;
+      color:#f1f5f9;
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      padding:48px 16px;
+    }
+
+    /* Outer container centers the inner card */
+    .form-container{
+      width:100%;
+      max-width:760px;
+      display:flex;
+      justify-content:center; /* centers .form-inner */
+    }
+
+    /* Card that holds the form */
+    .form-inner{
+      width:100%;
+      padding:28px;
+      background:var(--card);
+      border-radius:12px;
+      box-shadow:0 8px 20px rgba(0,0,0,0.4);
+    }
+
+    h1{
+      font-family:'Sigmar One', cursive;
+      color:var(--accent);
+      text-align:center;
+      margin:0 0 16px;
+      font-size:1.9rem;
+    }
+
+    /* form layout */
+    form { display:flex; flex-direction:column; gap:12px; align-items:center; }
+
+    /* helper wrapper so each field is centered and constrained */
+    .field { width:100%; display:flex; justify-content:center; }
+    .field > input, .field > textarea, .file-field { width:100%; max-width:560px; }
+
+    input, textarea {
+      padding:12px;
+      border-radius:8px;
+      border:0;
+      background:#1e293b;
+      color:inherit;
+      font-family:inherit;
+      font-size:1rem;
+      box-sizing:border-box;
+    }
+
+    textarea { min-height:90px; resize:vertical; }
+
+    .stock-grid{
+      width:100%;
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(80px, 1fr));
+      gap:10px;
+      justify-items:center; /* center each small stock input column */
+    }
+    .stock-grid input { max-width:140px; width:100%; }
+
+    input::placeholder, textarea::placeholder { color:var(--muted); }
+
+    .actions { display:flex; justify-content:center; margin-top:8px; width:100%; }
+    button{
+      padding:10px 16px;
+      border-radius:8px;
+      border:0;
+      background:var(--btn-grad);
+      color:#fff;
+      cursor:pointer;
+      font-family:inherit;
+    }
+    button:hover{ transform:translateY(-2px); box-shadow:0 6px 14px rgba(0,0,0,0.35); }
+
+    /* small screens */
+    @media (max-width:420px){
+      .form-inner{ padding:16px; }
+      .stock-grid input { max-width:none; }
+    }
+  </style>
 </head>
 <body>
-    <form method="post" action="add" enctype="multipart/form-data">
-        <input name="name" type="text" placeholder="name">
-        <br>
-        <textarea name="description" placeholder="description"></textarea>
-        <br>
-        <textarea name="content" placeholder="content(,)"></textarea>
-        <br>
-        <input type="number" placeholder="price_ct" name="price">
-        <br>
-        <input type="number" name="stockXS" placeholder="stockXS(default0)" value="0">
-        <br>
-        <input type="number" name="stockS" placeholder="stockS(default0)" value="0">
-        <br>
-        <input type="number" name="stockM" placeholder="stockM(default0)" value="0">
-        <br>
-        <input type="number" name="stockL" placeholder="stockL(default0)" value="0">
-        <br>
-        <input type="number" name="stockXL" placeholder="stockXL(default0)" value="0">
-        <br>
-        <input type="number" name="stockXXL" placeholder="stockXXL(default0)" value="0">
-        <br>
-        <input name="images" type="file" multiple>
-        <br>
-        <textarea name="collections" placeholder="collections(,)"></textarea>
-        <br>
-        <textarea name="modifications" placeholder="modifications(,)"></textarea>
-        <br>
-        <button type="submit">SUBMIT</button>
-    </form>
+  <div class="form-container">
+    <div class="form-inner">
+      <h1>Add Product</h1>
+
+      <form method="post" action="add" enctype="multipart/form-data">
+        <div class="field"><input name="name" type="text" placeholder="Name"></div>
+
+        <div class="field"><textarea name="description" placeholder="Description"></textarea></div>
+
+        <div class="field"><textarea name="content" placeholder="Content (comma-separated)"></textarea></div>
+
+        <div class="field"><input type="number" name="price" placeholder="Price (ct)"></div>
+
+        <div class="field" style="justify-content:flex-start;">
+          <label style="color:var(--accent);font-weight:600;">Stock</label>
+        </div>
+
+        <div class="stock-grid">
+          <input type="number" name="stockXS" placeholder="XS" value="0">
+          <input type="number" name="stockS" placeholder="S" value="0">
+          <input type="number" name="stockM" placeholder="M" value="0">
+          <input type="number" name="stockL" placeholder="L" value="0">
+          <input type="number" name="stockXL" placeholder="XL" value="0">
+          <input type="number" name="stockXXL" placeholder="XXL" value="0">
+        </div>
+
+        <div class="field file-field"><input name="images" type="file" multiple></div>
+
+        <div class="field"><textarea name="collections" placeholder="Collections (comma-separated)"></textarea></div>
+
+        <div class="field"><textarea name="modifications" placeholder="Modifications (comma-separated)"></textarea></div>
+
+        <div class="actions"><button type="submit">SUBMIT</button></div>
+      </form>
+    </div>
+  </div>
 </body>
 </html>

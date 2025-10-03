@@ -3,35 +3,102 @@
 <head>
     <script src="https://cdn.plot.ly/plotly-3.0.1.min.js" charset="utf-8"></script>
     <link rel="stylesheet" href="get_style/fonts.css" type="text/css">
-    <link rel="stylesheet" href="get_style/admin.css" type="text/css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Sigmar+One&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Admin Panel</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #0f172a; /* dark navy background */
+            font-family: 'Share Tech Mono', monospace;
+            color: #f1f5f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin: 2rem 0;
+            color: #38bdf8; /* cyan */
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+            letter-spacing: 2px;
+        }
+
+        .panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            width: 100%;
+            max-width: 400px;
+            padding: 2rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+
+        .panel a {
+            text-decoration: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            color: white;
+            font-size: 1.1rem;
+            font-family: 'Share Tech Mono', monospace;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #2563eb, #38bdf8);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+        }
+
+        .logout {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .logout a {
+            color: #f87171;
+            font-weight: bold;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .logout a:hover {
+            color: #ef4444;
+        }
+    </style>
 </head>
 <body>
-    <div>
-        <h1 class="share-tech-mono-regular">ADMIN</h1>
-    </div>
-    
-    <div>
-        
+    <h1 class="share-tech-mono-regular" >ADMIN</h1>
+
+    <div class="panel">
         <a href="{{ url_for('main.admin_products') }}">
             <button>Products</button>
         </a>
-        <br>
         <a href="{{ url_for('main.admin_orders')}}">
             <button>Orders</button>
         </a>
-    </div>
-    <div>
         <a href="{{ url_for('main.admin_notify_waitlist') }}">
             <button>Waitlists</button>
         </a>
     </div>
-    <div>
+
+    <div class="logout">
         <a href="{{ url_for('main.logout') }}">Logout</a>
     </div>
 </body>

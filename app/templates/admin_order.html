@@ -3,16 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Admin - Order Details</title>
+    <style>
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        h3 {
+            font-size: 18px;
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        p {
+            font-size: 16px;
+            margin: 8px 0;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+            margin: 10px 0 20px 0;
+        }
+
+        ul li {
+            background: #f9fafc;
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            border-left: 4px solid #3498db;
+            font-size: 15px;
+        }
+
+        .highlight {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            font-size: 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #217dbb;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+
+        .status.pending { background: #ffe08a; color: #8a6d1d; }
+        .status.completed { background: #b7f5c6; color: #226b37; }
+        .status.cancelled { background: #f5b7b1; color: #7b241c; }
+
+        .info-block {
+            background: #f8f9fb;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .status-actions {
+            display: flex;
+            align-items: center;
+        }
+    </style>
 </head>
 <body>
-    <h1>ID: {{ order.id }}</h1>
-    <h3>User ID. {{ order.user_id }}</h3>
-    <p>Products: {{ order.products }}</p>
-    <p>Price: {{ order.total_price }}</p>
-    <p>Status: {{ order.status }}</p>
-    <p>Address: {{ order.address }}</p>
-    <p>Contact: {{ order.email }}</p>
-    <p>Creation: {{ order.date }}</p>
+    <div class="container">
+        <h1>Order #{{ order.id }}</h1>
+        <h3>User ID: {{ order.user_id }}</h3>
+
+        <p class="highlight">Products:</p>
+        <ul>
+            {% for product in order.products.items() %}
+                <li>{{ product[1].count }}x {{ product[1].name }} ({{ product[1].modification }}) - Size: {{ product[1].size }}</li>
+            {% endfor %}
+        </ul>
+
+        <div class="info-block">
+            <span class="highlight">Price:</span> ${{ order.total_price }}
+        </div>
+
+        <div class="info-block status-actions">
+            <span class="highlight">Status:</span> 
+            <span class="status {% if order.status == 'Pending' %}pending{% elif order.status == 'Completed' %}completed{% elif order.status == 'Cancelled' %}cancelled{% endif %}">
+                {{ order.status }}
+            </span>
+            <a href="{{ url_for('main.admin_order_next_status', id=order.id) }}">
+                <button>Next Status ➡</button>
+            </a>
+        </div>
+
+        <div class="info-block"><span class="highlight">Address:</span> {{ order.address }}</div>
+        <div class="info-block"><span class="highlight">Contact:</span> {{ order.email }}</div>
+        <div class="info-block"><span class="highlight">Creation Date:</span> {{ order.date }}</div>
+
+        <a href="{{ url_for('main.admin_orders') }}"><button>⬅ Go Back</button></a>
+    </div>
 </body>
 </html>

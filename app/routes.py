@@ -205,6 +205,8 @@ def tracker():
 @login_required
 def submit_cart():
     cart = session.get('cart', {})
+    if len(cart) == 0:
+        return redirect(url_for("main.cart"))
     total_price = 0
     total_weight = 0
 
@@ -216,15 +218,16 @@ def submit_cart():
 
     # Get user address
     address = current_user.address
+    shipping_cost = 0  # Default shipping cost
 
-    try:
-        shipping_cost = get_shipping_cost_easypost(address, total_weight)
-    except Exception as e:
-        print("EasyPost failed:", e)
-        flash("Shipping estimate failed. Using default price.", "warning")
-        shipping_cost = 9.90
-
-    total_price += shipping_cost
+    #try:
+    #    shipping_cost = get_shipping_cost_easypost(address, total_weight)
+    #except Exception as e:
+    #    print("EasyPost failed:", e)
+    #    flash("Shipping estimate failed. Using default price.", "warning")
+    #    shipping_cost = 99
+#
+    #total_price += shipping_cost
     total_price_str = transform_in_euro(total_price)
 
     return render_template("pay.html",
@@ -241,9 +244,25 @@ def pay_cart():
         current_user_id = current_user.id
         current_user_address = current_user.address
         price_to_pay = request.get_json().get('amount', 1000)
+        for product in cart.items():
+            product_id = product[1]["product_id"]
+            count = product[1]["count"]
+            size = product[1]["size"]
+            OrderedProduct = Product.query.get(product_id)
+            if OrderedProduct.stock[size] < count:
+                print("Not enough stock for", OrderedProduct.name, "in size", size)
+                return jsonify({"error": f"Not enough stock for {OrderedProduct.name} in size {size}"}), 400
+            else:
+                OrderedProduct.stock[size] -= count
+                print(OrderedProduct.stock)
+                #!HERE IS A PROBLEMMM
+                db.session.add(OrderedProduct)
+                db.session.commit()
+        
         currency = request.form.get('currency', 'eur')
         payment_intent = stripe.PaymentIntent.create(amount=price_to_pay,currency=currency)
         create_order(cart=cart, price=price_to_pay, usr_id=current_user_id, order_address=current_user_address)
+        session['cart'] = {}
         return jsonify({"clientSecret": payment_intent.client_secret})
 
         
@@ -402,6 +421,23 @@ def admin_orders():
 def admin_order(id):
     order = Order.query.get_or_404(id)
     return render_template('admin_order.html', order=order)
+
+@main.route('/admin/order/<int:id>/next_status', methods=['GET','POST'])
+@admin_required
+def admin_order_next_status(id):
+    order = Order.query.get_or_404(id)
+    status_sequence = ["pending", "packing", "packed", "shipping", "shipped"]
+    try:
+        current_index = status_sequence.index(order.status)
+        if current_index < len(status_sequence) - 1:
+            order.status = status_sequence[current_index + 1]
+            db.session.commit()
+            flash(f"Order status updated to {order.status}", "success")
+        else:
+            flash("Order is already in the final status.", "info")
+    except ValueError:
+        flash("Invalid order status.", "danger")
+    return redirect(url_for('main.admin_order', id=id))
 
 @main.route("/admin/notify_waitlist")
 def admin_notify_waitlist():
