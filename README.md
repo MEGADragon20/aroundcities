@@ -1,6 +1,6 @@
-# DISCOVER - E-commerce Application
+# Around Cities - Online shop
 
-A Flask-based e-commerce web application with Stripe payment integration, product management, and admin functionality.
+A Flask-based e-commerce web application with Stripe payment integration, product management, and admin functionality. It's open source, because I like open source.
 
 ## Quick Start
 
@@ -8,6 +8,8 @@ A Flask-based e-commerce web application with Stripe payment integration, produc
 - Python 3.x
 - PostgreSQL
 - Virtual environment activated
+- waitress
+- see requirements.txt
 
 ### Installation
 
@@ -119,8 +121,8 @@ ngrok http 8000
 - [x] Test preorder functionality
 - [ ] Multiple images per product
 - [ ] Packaging cost integration (EasyPost)
-- [ ] User authentication requirement for checkout
-- [ ] Admin dashboard
+- [x] User authentication requirement for checkout
+- [x] Admin dashboard
 - [ ] Order details page
 
 ## Tech Stack
