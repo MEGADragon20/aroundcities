@@ -27,6 +27,11 @@ def log_request_info():
 def get_icon(filename):
     return send_from_directory("static/icons", filename)
 
+@main.route('/get_bgimage/<filename>')
+def get_bgimage(filename):
+    return send_from_directory("static/images", filename)
+
+
 @main.route('/get_image/<filename>', defaults={'foldername': None})
 @main.route('/get_image/<filename>/<foldername>')
 def get_image(filename, foldername):
@@ -51,9 +56,10 @@ def get_stripe_public_key():
         return render_template("error.html", error_num = 403, error_message = "No access")
     
     return jsonify({"publicKey": os.getenv("STRIPE_PUBLIC_KEY")})
+
 @main.route("/")
 def home():
-    return render_template("index.html")
+    return render_template("index.html", current_endpoint=request.endpoint)
 
 @main.route("/about_us")
 def about_us():
@@ -176,26 +182,24 @@ def remove_from_cart(ucic): #? Needs to be checked pls
 def tracker():
     product_ids = []
     for order in Order.query.all():
-        for product in order.products:
-            product_ids.append(order.products[product]["product_id"])
-    origins = ["madrid", " tokyo", "paris", "berlin", "newyork", "london"]
+        if order.status == "shipped" or order.status == "shipping":
+            for product in order.products:
+                product_ids.append(order.products[product]["product_id"])
+    origins = ["madrid", "tokyo", "newyork", "rome" ] ##! add more // automatically from db?
     collections = {}
     for i in origins:
         collections[i] = 0
     for product_id in product_ids:
         product = Product.query.get(product_id)
-        print(product.collections)
         if product:
             for collection in product.collections:
                 if collection in collections:
                     collections[collection] += 1
-    print("collections", collections)
     types = []
     values = []
     for k, v in collections.items():
         types.append(k)
         values.append(v)
-    print("types", types)
     return render_template("tracker.html", types=types, values=values)
 
 
@@ -471,3 +475,10 @@ def notify_waitlist(product_id):
     db.session.commit()
 
     return f"{emails_sent} E-Mails verschickt."
+
+
+# Just for fun
+
+@main.route("/pong")
+def pong():
+    return render_template("pong.html")

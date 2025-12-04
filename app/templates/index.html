@@ -39,10 +39,14 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #ffffff 100%);
-            color: #2c3e50;
+            color: white;
             position: relative;
             overflow: hidden;
+            background:linear-gradient(0deg, rgba(194, 193, 194, 0.3), rgba(190, 190, 190, 0.3)), url('{{ url_for("main.get_bgimage", filename="ny1.jpeg") }}');
+            background-size: cover;
+            background-position:bottom;
+            /*-webkit-filter: grayscale(100%); 
+             filter: grayscale(100%);*/
         }
 
         .landing-section::before {
@@ -159,6 +163,12 @@
             position: relative;
             overflow: hidden;
         }
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
 
         .product-image::before {
             content: '';
@@ -167,15 +177,6 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: 
-                linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.8) 50%, transparent 60%),
-                repeating-linear-gradient(
-                    90deg,
-                    transparent,
-                    transparent 3px,
-                    rgba(108,117,125,0.1) 3px,
-                    rgba(108,117,125,0.1) 6px
-                );
         }
 
         .product-content {
@@ -246,12 +247,25 @@
     <!-- Products Section -->
     <div class="products-section" id="products">
         <div class="products-container">
-            <h2 class="products-title sigmar-one-regular">Our Latest Drops</h2>
+            
             <div class="products-grid">
                 
-                <div class="product-card">
+                
+
+                <div class="product-card" onclick="window.location.href='{{url_for("main.products")}}'">
                     <div class="product-image">
-                        🏙️
+                        <img src="{{url_for('main.get_bgimage', filename='rm1.jpg')}}" alt="🏢">
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title sigmar-one-regular">The Collection</h3>
+                        <p class="product-description share-tech-mono-regular">
+                            Explore our exclusive collection of city-inspired clothing.
+                        </p>
+                    </div>
+                </div>
+                <div class="product-card" onclick="window.location.href='{{url_for("main.tracker")}}'">
+                    <div class="product-image">
+                        <img src="{{url_for('main.get_bgimage', filename='md1.jpg')}}" alt="🏢">
                     </div>
                     <div class="product-content">
                         <h3 class="product-title sigmar-one-regular"> <a href="{{ url_for('main.tracker') }}">The Tracker</a></h3>
@@ -260,39 +274,14 @@
                         </p>
                     </div>
                 </div>
-
-                <div class="product-card">
+                <div class="product-card" onclick="window.location.href='{{url_for("main.about_us")}}'"">
                     <div class="product-image">
-                        🌃
+                        <img src="{{url_for('main.get_bgimage', filename='tk1.jpg')}}" alt="🏢">
                     </div>
                     <div class="product-content">
-                        <h3 class="product-title sigmar-one-regular">Urban Nights</h3>
+                        <h3 class="product-title sigmar-one-regular"><a href="{{ url_for('main.about_us') }}">The Idea</a></h3>
                         <p class="product-description share-tech-mono-regular">
-                            Inspired by the neon-lit streets and endless energy of metropolitan nightlife.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="product-card">
-                    <div class="product-image">
-                        🏢
-                    </div>
-                    <div class="product-content">
-                        <h3 class="product-title sigmar-one-regular">Skyline Series</h3>
-                        <p class="product-description share-tech-mono-regular">
-                            Capturing the architectural beauty and urban landscapes of world cities.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="product-card">
-                    <div class="product-image">
-                        🌆
-                    </div>
-                    <div class="product-content">
-                        <h3 class="product-title sigmar-one-regular">Metro Culture</h3>
-                        <p class="product-description share-tech-mono-regular">
-                            Celebrating the diverse cultures and communities that make cities vibrant.
+                            Who I am and what I stand for.
                         </p>
                     </div>
                 </div>

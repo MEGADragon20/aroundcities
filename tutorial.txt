@@ -55,6 +55,11 @@ sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1 (set to 0 to reactivate)
 then
 ngrok http 8000
 
+
+Instead of ngrok for production cloudflare(d) is better.
+Do the same with nginx but then:
+
+
 btw TODO's:
 logging user requests || DONE
 change GMX to IONOS with domain etc 

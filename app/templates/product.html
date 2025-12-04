@@ -421,12 +421,13 @@
                         {% endfor %}
                     </select>
                     <select class="flipIn" name="size">
-                        <option value="XS">XS</option>
-                        <option value="S">S</option>
-                        <option value="M">M</option>
-                        <option value="L">L</option>
-                        <option value="XL">XL</option>
-                        <option value="XXL">XXL</option>
+                        {% for size in product.stock %}
+                        {% if product.stock[size] > 0 %}
+                        <option value="{{size}}">{{size}}</option>
+                        {% else %}
+                        <option value="{{size}}" disabled>{{size}}</option>
+                        {% endif %}
+                        {% endfor %}
                     </select>
                     <button class="flipIn" type="submit">Add to Cart</button>
                 </form>

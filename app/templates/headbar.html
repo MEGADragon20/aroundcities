@@ -283,14 +283,16 @@
     <header class="header" id="header">
         <nav class="nav-container">
             <!-- Logo -->
-            <a href="{{url_for('main.home')}}#section4">
-                <img src="{{url_for('main.get_icon', filename='logo.png')}}" alt="Logo Image" class="logo">
+            <a href="{% if current_endpoint == 'main.home' %}{{ url_for('main.about_us') }}{% else %}{{ url_for('main.home') }}{% endif %}">
+                <img src="{{ url_for('main.get_icon', filename='logo.png') }}" alt="Logo Image" class="logo">
             </a>
+
+
 
             <!-- Desktop Navigation -->
             <div class="desktop-nav">
                 <a href="{{ url_for('main.home') }}" class="sigmar-one-regular">Home</a>
-                <a href="{{ url_for('main.products') }}" class="sigmar-one-regular">Drops</a>
+                <a href="{{ url_for('main.products') }}" class="sigmar-one-regular">Collection</a>
                 <a href="{{ url_for('main.login') }}" class="sigmar-one-regular">Login</a>
                 <a href="{{ url_for('main.cart') }}" class="sigmar-one-regular">Cart</a>
             </div>
@@ -308,7 +310,7 @@
     <div class="mobile-popup" id="mobilePopup">
         <div class="mobile-popup-content">
             <a href="{{ url_for('main.home') }}" class="sigmar-one-regular">Home</a>
-            <a href="{{ url_for('main.products') }}" class="sigmar-one-regular">Drops</a>
+            <a href="{{ url_for('main.products') }}" class="sigmar-one-regular">Collection</a>
             <a href="{{ url_for('main.login') }}" class="sigmar-one-regular">Login</a>
             <a href="{{ url_for('main.cart') }}" class="sigmar-one-regular">Cart</a>
         </div>
