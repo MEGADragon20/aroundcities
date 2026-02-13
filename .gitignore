@@ -1,4 +1,5 @@
 .env
 /venv
 web_log.txt
-/static/uploads
+/static/uploads/
+
